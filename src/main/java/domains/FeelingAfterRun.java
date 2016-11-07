@@ -1,24 +1,26 @@
 package domains;
 
+import foundation.Ensurer;
+
+import java.time.LocalDateTime;
+
 /**
  * Written by Luca Weiss (z3ntu)
  * https://github.com/z3ntu
  */
-public class FeelingAfterRun {
-    private Integer id;
+public abstract class FeelingAfterRun extends BaseModel<FeelingAfterRun, Long> {
 
     private String feeling;
 
-    public FeelingAfterRun(Integer id, String feeling){
-
-    }
-    public Integer getId() {
-        return id;
+    protected  FeelingAfterRun(){
+        super();
     }
 
-    public void setId(Integer id){
-        this.id=id;
+    public FeelingAfterRun(Long id,final Integer version, String feeling){
+        super(id, version);
+        setFeeling(feeling);
     }
+
 
     public String getFeeling(){
         return feeling;
@@ -27,5 +29,6 @@ public class FeelingAfterRun {
     public void setFeeling(String feeling){
         this.feeling=feeling;
     }
+
 
 }

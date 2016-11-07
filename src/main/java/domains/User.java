@@ -1,20 +1,26 @@
 package domains;
 
+import foundation.Ensurer;
+
 /**
  * Written by Luca Weiss (z3ntu)
  * https://github.com/z3ntu
  */
 
-public abstract class User<DOMAIN_TYPE extends User, PK_TYPE extends String> implements Comparable<DOMAIN_TYPE> {
-    private PK_TYPE id;
-
-    private Integer version;
-
+public abstract class User extends BaseModel<User, Long> {
 
     private String name;
     private String password;
 
-    public User(String name, String password) {
+
+    protected User() {
+        super();
+    }
+
+    protected User(final Long id, final Integer version, String name, String password) {
+        super(id, version);
+        setId(id);
+        setVersion(version);
         setName(name);
         setPassword(password);
     }
@@ -35,5 +41,7 @@ public abstract class User<DOMAIN_TYPE extends User, PK_TYPE extends String> imp
     public void setPassword(String password) {
         this.password = password;
     }
+
+
 
 }
