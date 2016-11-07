@@ -7,11 +7,11 @@ import java.sql.SQLException;
  */
 public class PersistenceException extends RuntimeException {
 
-    public static Throwable forException(Exception e) {
+    public static PersistenceException forException(Exception e) {
         return new PersistenceException();
     }
 
-    public static Throwable forSqlException(SQLException e) {
+    public static PersistenceException forSqlException(SQLException e) {
         return new PersistenceException();
     }
 }

@@ -25,7 +25,7 @@ public abstract class AbstractJdbcRepository<DOMAIN extends BaseModel<DOMAIN,
      *   * @throws PersistenceException
      *  
      */
-    public final int save(Connection con, DOMAIN entity) throws Throwable {
+    public final int save(Connection con, DOMAIN entity) throws PersistenceException{
         try {
             if (entity.isNew()) {
                 return insert(con, entity);
@@ -43,8 +43,7 @@ public abstract class AbstractJdbcRepository<DOMAIN extends BaseModel<DOMAIN,
     protected abstract int update(Connection con, DOMAIN entity) throws
             PersistenceException;
 
-    public final int delete(Connection con, PRIMARY_KEY id) throws
-            Throwable {
+    public final int delete(Connection con, PRIMARY_KEY id) throws PersistenceException{
         PreparedStatement deleteByIdStmt = getDeleteByIdStmt();
 
         try {
