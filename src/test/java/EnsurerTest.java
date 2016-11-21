@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.EasyMock2Matchers.equalTo;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
 
@@ -48,7 +48,6 @@ public class EnsurerTest {
         ex.expect(IllegalArgumentException.class);
         ex.expectMessage("arg");
         ex.expectMessage(is(equalTo("arg.l shall not be null")));
-
 
         Ensurer.IsNotNull(null, "");
     }

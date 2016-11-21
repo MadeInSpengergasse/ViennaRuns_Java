@@ -1,7 +1,5 @@
 package domains;
 
-import foundation.Ensurer;
-
 import java.time.LocalDateTime;
 
 /**

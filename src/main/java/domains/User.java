@@ -1,6 +1,5 @@
 package domains;
 
-import foundation.Ensurer;
 
 /**
  * Written by Luca Weiss (z3ntu)
