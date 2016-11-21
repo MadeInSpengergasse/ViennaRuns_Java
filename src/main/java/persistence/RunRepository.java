@@ -24,7 +24,7 @@ public class RunRepository extends AbstractJdbcRepository<Run, Long> {
         return null;
     }
 
-   
+
 
     @Override
     protected int insert(Connection con, Run entity) throws PersistenceException {
