@@ -4,16 +4,23 @@ import domains.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
 public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> implements JdbcRepository<User, Long> {
 
     private static final String tname = "User";
+    private static PreparedStatement findByIdStatement;
 
     @Override
     public Optional<User> findById(Connection con, Long id) throws Exception {
-        con.prepareStatement(String.format("Select * from %s where u_username=%s", tname, id));
+        if(findByIdStatement == null) {
+            findByIdStatement = con.prepareStatement("SELECT * FROM User WHERE u_id=?");
+        }
+        findByIdStatement.setString(0, id.toString());
+        ResultSet res = findByIdStatement.executeQuery();
+        // Optional.of()
         return null;
     }
 
