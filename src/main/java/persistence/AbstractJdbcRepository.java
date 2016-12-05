@@ -9,9 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created by lukas on 11/7/16.
- */
 public abstract class AbstractJdbcRepository<DOMAIN extends BaseModel<DOMAIN,
         PRIMARY_KEY>, PRIMARY_KEY extends Number>
         implements JdbcRepository<DOMAIN, PRIMARY_KEY> {
@@ -25,7 +22,7 @@ public abstract class AbstractJdbcRepository<DOMAIN extends BaseModel<DOMAIN,
      *   * @throws PersistenceException
      *  
      */
-    public final int save(Connection con, DOMAIN entity) throws PersistenceException{
+    public final int save(Connection con, DOMAIN entity) throws PersistenceException {
         try {
             if (entity.isNew()) {
                 return insert(con, entity);
@@ -43,7 +40,7 @@ public abstract class AbstractJdbcRepository<DOMAIN extends BaseModel<DOMAIN,
     protected abstract int update(Connection con, DOMAIN entity) throws
             PersistenceException;
 
-    public final int delete(Connection con, PRIMARY_KEY id) throws PersistenceException{
+    public final int delete(Connection con, PRIMARY_KEY id) throws PersistenceException {
         PreparedStatement deleteByIdStmt = getDeleteByIdStmt();
 
         try {

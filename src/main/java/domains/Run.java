@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
  * Written by Luca Weiss (z3ntu)
  * https://github.com/z3ntu
  */
-public abstract class Run extends BaseModel <Run, Long>{
+public abstract class Run extends BaseModel<Run, Long> {
 
 
     private User user;
@@ -29,7 +29,6 @@ public abstract class Run extends BaseModel <Run, Long>{
         setFeeling(feeling);
 
     }
-
 
 
     public User getUser() {

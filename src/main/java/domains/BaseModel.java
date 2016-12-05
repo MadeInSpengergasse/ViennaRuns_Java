@@ -4,9 +4,6 @@ import foundation.Ensurer;
 
 import java.time.LocalDateTime;
 
-/**
- * Created by lukas on 11/7/16.
- */
 public abstract class BaseModel<DOMAIN_TYPE extends BaseModel, PK_TYPE extends Number> implements Comparable<DOMAIN_TYPE> {
 
     private PK_TYPE id;
@@ -24,20 +21,20 @@ public abstract class BaseModel<DOMAIN_TYPE extends BaseModel, PK_TYPE extends N
         this.version = Ensurer.IsNotNull(version, "version");
     }
 
-    public final void setId(PK_TYPE id) {
-        this.id = Ensurer.IsNotNull(id, "id");
-    }
-
     public final PK_TYPE getId() {
         return id;
     }
 
-    public final void setVersion(Integer version) {
-        this.version = Ensurer.IsNotNull(version, "version");
+    public final void setId(PK_TYPE id) {
+        this.id = Ensurer.IsNotNull(id, "id");
     }
 
     public final Integer getVersion() {
         return version;
+    }
+
+    public final void setVersion(Integer version) {
+        this.version = Ensurer.IsNotNull(version, "version");
     }
 
     public final Boolean isNew() {
@@ -45,7 +42,7 @@ public abstract class BaseModel<DOMAIN_TYPE extends BaseModel, PK_TYPE extends N
     }
 
     public final String toString() {
-        return String.format("%s{id:'%d', version:'%d'}", getClass().getSimpleName(),
+        return String.format("%s{id:'%s', version:'%d'}", getClass().getSimpleName(),
                 id, version);
     }
 }

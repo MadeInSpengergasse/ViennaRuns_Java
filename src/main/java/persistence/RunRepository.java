@@ -1,6 +1,5 @@
 package persistence;
 
-import domains.BaseModel;
 import domains.Run;
 
 import java.sql.Connection;
@@ -8,9 +7,6 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Created by lukas on 11/21/16.
- */
 public class RunRepository extends AbstractJdbcRepository<Run, Long> {
 
 
@@ -21,11 +17,9 @@ public class RunRepository extends AbstractJdbcRepository<Run, Long> {
     }
 
     @Override
-    public List findAll(Connection con) throws Exception {
+    public List<Run> findAll(Connection con) throws Exception {
         return null;
     }
-
-
 
     @Override
     protected int insert(Connection con, Run entity) throws PersistenceException {

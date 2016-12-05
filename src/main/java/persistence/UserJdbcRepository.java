@@ -1,4 +1,5 @@
 package persistence;
+
 import domains.User;
 
 import java.sql.Connection;
@@ -7,9 +8,6 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Created by lukas on 11/7/16.
- */
 public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> implements JdbcRepository<User, Long> {
 
     private static final String tname = "User";
@@ -18,7 +16,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
     @Override
     public Optional<User> findById(Connection con, Long id) throws Exception {
         if(findByIdStatement == null) {
-            findByIdStatement = con.prepareStatement("SELECT * FROM User WHERE u_id=?");
+            findByIdStatement = con.prepareStatement(String.format("Select * from %s where u_username=%s", tname, id));
         }
         findByIdStatement.setString(0,id.toString() );
         ResultSet res = findByIdStatement.executeQuery();
