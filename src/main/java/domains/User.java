@@ -6,17 +6,17 @@ package domains;
  * https://github.com/z3ntu
  */
 
-public abstract class User extends BaseModel<User, Long> {
+public class User extends BaseModel<User, Long> {
 
     private String name;
     private String password;
 
 
-    protected User() {
+    public User() {
         super();
     }
 
-    protected User(final Long id, final Integer version, String name, String password) {
+    public User(final Long id, final Integer version, String name, String password) {
         super(id, version);
         setId(id);
         setVersion(version);
@@ -42,4 +42,8 @@ public abstract class User extends BaseModel<User, Long> {
     }
 
 
+    @Override
+    public int compareTo(User o) {
+        return 0;
+    }
 }
