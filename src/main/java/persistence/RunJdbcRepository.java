@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class RunRepository extends AbstractJdbcRepository<Run, Long> {
+public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
 
 
     private static final String tname = "Run";
