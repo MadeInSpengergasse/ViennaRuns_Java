@@ -5,7 +5,7 @@ package domains;
  * Written by Luca Weiss (z3ntu)
  * https://github.com/z3ntu
  */
-public abstract class FeelingAfterRun extends BaseModel<FeelingAfterRun, Long> {
+public class FeelingAfterRun extends BaseModel<FeelingAfterRun, Long> {
 
     private String feeling;
 
@@ -28,4 +28,8 @@ public abstract class FeelingAfterRun extends BaseModel<FeelingAfterRun, Long> {
     }
 
 
+    @Override
+    public int compareTo(FeelingAfterRun o) {
+        return 0;
+    }
 }
