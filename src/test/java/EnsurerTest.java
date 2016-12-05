@@ -1,6 +1,7 @@
 import foundation.Ensurer;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -9,13 +10,9 @@ import org.junit.runner.RunWith;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
 
-/**
- * Created by lukas on 11/7/16.
- */
 @RunWith(JUnitParamsRunner.class)
 public class EnsurerTest {
 
@@ -46,10 +43,9 @@ public class EnsurerTest {
     @Test
     public void isNotNullBehaviourOnNullValueImproved() {
         ex.expect(IllegalArgumentException.class);
-        ex.expectMessage("arg");
-        ex.expectMessage(is(equalTo("arg.l shall not be null")));
+        ex.expectMessage(Matchers.is("testtag is null"));
 
-        Ensurer.IsNotNull(null, "");
+        Ensurer.IsNotNull(null, "testtag");
     }
 
     @Test

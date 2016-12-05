@@ -42,5 +42,4 @@ public abstract class User extends BaseModel<User, Long> {
     }
 
 
-
 }
