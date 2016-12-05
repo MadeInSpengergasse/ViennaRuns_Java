@@ -1,25 +1,26 @@
 package domains;
 
-import java.time.LocalDateTime;
+
+import java.sql.Date;
 
 /**
  * Written by Luca Weiss (z3ntu)
  * https://github.com/z3ntu
  */
-public abstract class Run extends BaseModel<Run, Long> {
+public class Run extends BaseModel<Run, Long> {
 
 
     private User user;
     private Float distance;
     private Integer duration;
-    private LocalDateTime date;
+    private Date date;
     private FeelingAfterRun feeling;
 
-    protected Run() {
+    public Run() {
         super();
     }
 
-    public Run(Long id, final Integer version, User user, Float distance, Integer duration, LocalDateTime date, FeelingAfterRun feeling) {
+    public Run(Long id, final Integer version, User user, Float distance, Integer duration, Date date, FeelingAfterRun feeling) {
         super(id, version);
 
         setUser(user);
@@ -55,11 +56,11 @@ public abstract class Run extends BaseModel<Run, Long> {
         this.duration = duration;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -72,4 +73,8 @@ public abstract class Run extends BaseModel<Run, Long> {
     }
 
 
+    @Override
+    public int compareTo(Run o) {
+        return 0;
+    }
 }
