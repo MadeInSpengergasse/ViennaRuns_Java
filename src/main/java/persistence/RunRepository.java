@@ -28,26 +28,25 @@ public class RunRepository extends AbstractJdbcRepository<Run, Long> {
     @Override
     public Optional<Run> findById(Connection con, Long id) throws Exception {
         if (findByIdStatement == null) {
-            findByIdStatement = con.prepareStatement(String.format("Select * from %s inner join %t on r_user = u_id inner join %u on r_feeling=far_feeling where id=%s", tname, tuser, tfar, id));
+            findByIdStatement = con.prepareStatement(String.format("SELECT * FROM %s INNER JOIN %s ON r_user = u_id INNER JOIN %s ON r_feeling=far_feeling WHERE id=%s", tname, tuser, tfar, id));
         }
-        findByIdStatement.setString(0, id.toString());
+        findByIdStatement.setString(1, id.toString());
         ResultSet res = findByIdStatement.executeQuery();
 
         User u = new User(res.getLong("id"), res.getInt("version"), res.getString("u_name"), res.getString("u_password"));
         FeelingAfterRun far = new FeelingAfterRun(res.getLong("id"), res.getInt("version"), res.getString("far_feeling"));
         Run r = new Run(res.getLong("id"), res.getInt("version"), u, res.getFloat("r_distance"), res.getInt("r_duration"), res.getDate("r_date"), far);
-        Optional<Run> run = Optional.of(r);
 
-        return run;
+        return Optional.of(r);
     }
 
     @Override
     public List<Run> findAll(Connection con) throws Exception {
         if (findAllStatement == null) {
-            findAllStatement = con.prepareStatement(String.format("Select * from %s", tname));
+            findAllStatement = con.prepareStatement(String.format("SELECT * FROM %s", tname));
         }
         ResultSet res = findAllStatement.executeQuery();
-        List<Run> runs = new LinkedList<Run>();
+        List<Run> runs = new LinkedList<>();
 
         while (res.next()) {
             User u = new User(res.getLong("id"), res.getInt("version"), res.getString("u_name"), res.getString("u_password"));
@@ -63,7 +62,7 @@ public class RunRepository extends AbstractJdbcRepository<Run, Long> {
     protected int insert(Connection con, Run entity) throws PersistenceException {
         if (insertStatement == null) {
             try {
-                insertStatement = con.prepareStatement(String.format("insert into %s  (r_user, r_distance, r_duration, r_date, r_feeling) values(%t,%u,%v,%w)", tname, entity.getUser().getId(), entity.getDistance(), entity.getDuration(), entity.getDate(), entity.getFeeling().getId()));
+                insertStatement = con.prepareStatement(String.format("INSERT INTO %s (r_user, r_distance, r_duration, r_date, r_feeling) VALUES(%s, %s, %s, %s, %s)", tname, entity.getUser().getId(), entity.getDistance(), entity.getDuration(), entity.getDate(), entity.getFeeling().getId()));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -83,7 +82,7 @@ public class RunRepository extends AbstractJdbcRepository<Run, Long> {
     protected int update(Connection con, Run entity) throws PersistenceException {
         if (updateStatement == null) {
             try {
-                updateStatement = con.prepareStatement(String.format("update %s set r_user=%v,r_distance=%w, r_duration=%x, r_date=%y, r_feeling=%z where r_id=%t)", tname, entity.getUser().getId(), entity.getDistance(), entity.getDuration(), entity.getDate(), entity.getFeeling().getId()));
+                updateStatement = con.prepareStatement(String.format("UPDATE %s SET r_user=%s,r_distance=%s, r_duration=%s, r_date=%s, r_feeling=%s WHERE r_id=%s", tname, entity.getUser().getId(), entity.getDistance(), entity.getDuration(), entity.getDate(), entity.getFeeling().getId(), entity.getId()));
             } catch (SQLException e) {
                 e.printStackTrace();
             }

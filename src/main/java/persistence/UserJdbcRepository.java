@@ -23,24 +23,23 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
     @Override
     public Optional<User> findById(Connection con, Long id) throws Exception {
         if (findByIdStatement == null) {
-            findByIdStatement = con.prepareStatement(String.format("Select * from %s where u_id=%s", tname, id));
+            findByIdStatement = con.prepareStatement(String.format("SELECT * FROM %s WHERE u_id=%s", tname, id));
         }
-        findByIdStatement.setString(0, id.toString());
+        findByIdStatement.setString(1, id.toString());
         ResultSet res = findByIdStatement.executeQuery();
 
         User u = new User(res.getLong("id"), res.getInt("version"), res.getString("u_name"), res.getString("u_password"));
-        Optional<User> user = Optional.of(u);
 
-        return user;
+        return Optional.of(u);
     }
 
     @Override
     public List<User> findAll(Connection con) throws Exception {
         if (findAllStatement == null) {
-            findAllStatement = con.prepareStatement(String.format("Select * from %s", tname));
+            findAllStatement = con.prepareStatement(String.format("SELECT * FROM %s", tname));
         }
         ResultSet res = findAllStatement.executeQuery();
-        List<User> users = new LinkedList<User>();
+        List<User> users = new LinkedList<>();
 
         while (res.next()) {
             long id = res.getLong("id");
@@ -58,7 +57,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
     protected int insert(Connection con, User entity) throws PersistenceException {
         if (insertStatement == null) {
             try {
-                insertStatement = con.prepareStatement(String.format("insert into %s (u_user,u_password) values(%v,%w)", tname, entity.getName(), entity.getPassword()));
+                insertStatement = con.prepareStatement(String.format("INSERT INTO %s (u_user,u_password) VALUES(%s,%s)", tname, entity.getName(), entity.getPassword()));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -78,7 +77,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
     protected int update(Connection con, User entity) throws PersistenceException {
         if (updateStatement == null) {
             try {
-                updateStatement = con.prepareStatement(String.format("update %s set u_user=%v,u_password=%w where u_id=%t)", tname, entity.getName(), entity.getPassword()));
+                updateStatement = con.prepareStatement(String.format("UPDATE %s SET u_user=%s,u_password=%s WHERE u_id=%s", tname, entity.getName(), entity.getPassword(), entity.getId()));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
