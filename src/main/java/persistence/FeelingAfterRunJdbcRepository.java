@@ -13,7 +13,7 @@ import java.util.Optional;
 /**
  * Created by Jan Wadsak on 11/12/2016.
  */
-public class FeelingAfterRunJdbcRepository {
+public class FeelingAfterRunJdbcRepository extends AbstractJdbcRepository<FeelingAfterRun, Long> implements JdbcRepository<FeelingAfterRun, Long> {
     private static final String tname = "FeelingAfterRun";
     private static final FeelingAfterRun far = new FeelingAfterRun();
     private static PreparedStatement findByIdStatement;
@@ -22,6 +22,7 @@ public class FeelingAfterRunJdbcRepository {
     private static PreparedStatement updateStatement;
     private static PreparedStatement deleteStatement;
 
+    @Override
     public Optional<FeelingAfterRun> findById(Connection con, Long id) throws Exception {
         if (findByIdStatement == null) {
             findByIdStatement = con.prepareStatement(String.format("SELECT * FROM %s WHERE far_id=%s", tname, id));
@@ -34,6 +35,7 @@ public class FeelingAfterRunJdbcRepository {
         return Optional.of(f);
     }
 
+    @Override
     public List<FeelingAfterRun> findAll(Connection con) throws Exception {
         if (findAllStatement == null) {
             findAllStatement = con.prepareStatement(String.format("SELECT * FROM %s", tname));
@@ -48,6 +50,7 @@ public class FeelingAfterRunJdbcRepository {
         return feelingAfterRuns;
     }
 
+    @Override
     protected int insert(Connection con, FeelingAfterRun entity) throws PersistenceException {
         if (insertStatement == null) {
             try {
@@ -66,6 +69,7 @@ public class FeelingAfterRunJdbcRepository {
         return result;
     }
 
+    @Override
     protected int update(Connection con, FeelingAfterRun entity) throws PersistenceException {
         if (updateStatement == null) {
             try {
@@ -86,18 +90,22 @@ public class FeelingAfterRunJdbcRepository {
         return result;
     }
 
+    @Override
     protected void storeDeleteByIdStmt(PreparedStatement deleteByIdStmt) {
         if (deleteByIdStmt != null) deleteStatement = deleteByIdStmt;
     }
 
+    @Override
     protected PreparedStatement getDeleteByIdStmt() {
         return deleteStatement;
     }
 
+    @Override
     protected String getTableName() {
         return tname;
     }
 
+    @Override
     protected String getPrimaryKeyColumnName() {
         return far.getId().toString();
     }
