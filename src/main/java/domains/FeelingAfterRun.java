@@ -9,7 +9,7 @@ public class FeelingAfterRun extends BaseModel<FeelingAfterRun, Long> {
 
     private String feeling;
 
-    protected FeelingAfterRun() {
+    public FeelingAfterRun() {
         super();
     }
 
