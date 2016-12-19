@@ -10,9 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Created by Jan Wadsak on 11/12/2016.
- */
 public class FeelingAfterRunJdbcRepository extends AbstractJdbcRepository<FeelingAfterRun, Long> implements JdbcRepository<FeelingAfterRun, Long> {
     private static final String tname = "FeelingAfterRun";
     private static final FeelingAfterRun far = new FeelingAfterRun();
