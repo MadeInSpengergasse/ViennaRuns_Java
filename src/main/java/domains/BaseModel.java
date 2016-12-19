@@ -45,4 +45,8 @@ public abstract class BaseModel<DOMAIN_TYPE extends BaseModel, PK_TYPE extends N
         return String.format("%s{id:'%s', version:'%d'}", getClass().getSimpleName(),
                 id, version);
     }
+    public int compareTo(BaseModel o){
+        if (o.getId().equals(this.getId()) && o.getVersion().equals(this.getVersion())) return 0;
+        else return -1;
+    }
 }

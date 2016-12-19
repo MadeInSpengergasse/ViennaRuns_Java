@@ -37,6 +37,8 @@ public class User extends BaseModel<User, Long> {
 
     @Override
     public int compareTo(User o) {
+        if (super.compareTo(o)==-1) return -1;
+        else
         if(o.getName().equals(this.getName()) &&
                 o.getPassword().equals(this.getPassword()))
             return 0;
