@@ -3,10 +3,6 @@ package domains;
 
 import java.sql.Date;
 
-/**
- * Written by Luca Weiss (z3ntu)
- * https://github.com/z3ntu
- */
 public class Run extends BaseModel<Run, Long> {
 
 
