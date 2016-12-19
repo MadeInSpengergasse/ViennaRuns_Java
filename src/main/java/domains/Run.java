@@ -75,6 +75,14 @@ public class Run extends BaseModel<Run, Long> {
 
     @Override
     public int compareTo(Run o) {
-        return 0;
+
+        if(o.getUser().equals(this.getUser()) &&
+                o.getDistance().equals(this.getDistance()) &&
+                o.getDuration().equals(this.getDuration()) &&
+                o.getDate().equals(this.getDate()) &&
+                o.getFeeling().equals(this.getFeeling()))
+            return 0;
+        else
+            return -1;
     }
 }

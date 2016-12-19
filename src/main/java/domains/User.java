@@ -18,8 +18,7 @@ public class User extends BaseModel<User, Long> {
 
     public User(final Long id, final Integer version, String name, String password) {
         super(id, version);
-        setId(id);
-        setVersion(version);
+
         setName(name);
         setPassword(password);
     }
@@ -44,6 +43,10 @@ public class User extends BaseModel<User, Long> {
 
     @Override
     public int compareTo(User o) {
-        return 0;
+        if(o.getName().equals(this.getName()) &&
+                o.getPassword().equals(this.getPassword()))
+            return 0;
+        else
+            return -1;
     }
 }
