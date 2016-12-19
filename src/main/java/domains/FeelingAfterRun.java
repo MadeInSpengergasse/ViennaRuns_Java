@@ -30,9 +30,9 @@ public class FeelingAfterRun extends BaseModel<FeelingAfterRun, Long> {
 
     @Override
     public int compareTo(FeelingAfterRun o) {
-        if (super.compareTo(o)==-1)return -1;
+        if (super._compareTo(o)==-1)return -1;
         else
-            if (o.getFeeling().equals(this.getFeeling()))
+            if (o.getFeeling().equals(this.getFeeling()) &&o.getId().equals(this.getId()) && o.getVersion().equals(this.getVersion()))
                 return 0;
 
         else return -1;
