@@ -74,11 +74,11 @@ public class Run extends BaseModel<Run, Long> {
 
         if(super._compareTo(o)==-1) return -1;
         else
-        if(o.getUser().equals(this.getUser()) &&
+        if(o.getUser().compareTo(this.getUser()) == 0 &&
                 o.getDistance().equals(this.getDistance()) &&
                 o.getDuration().equals(this.getDuration()) &&
                 o.getDate().equals(this.getDate()) &&
-                o.getFeeling().equals(this.getFeeling()))
+                o.getFeeling().compareTo(this.getFeeling()) == 0)
             return 0;
         else
             return -1;
