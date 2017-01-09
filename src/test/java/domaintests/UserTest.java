@@ -1,6 +1,6 @@
 package domaintests;
 
-import domains.User;
+import domain.User;
 import junitparams.JUnitParamsRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,6 +1,6 @@
 package persistence;
 
-import domains.BaseModel;
+import domain.BaseModel;
 import org.hsqldb.types.Types;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

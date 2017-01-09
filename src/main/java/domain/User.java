@@ -1,4 +1,4 @@
-package domains;
+package domain;
 
 public class User extends BaseModel<User, Long> {
 

@@ -1,8 +1,8 @@
 package domaintests;
 
-import domains.FeelingAfterRun;
-import domains.Run;
-import domains.User;
+import domain.FeelingAfterRun;
+import domain.Run;
+import domain.User;
 import junitparams.JUnitParamsRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,0 +1,718 @@
+From af94c36d936f24bcff78a44b5065c5cf6f0e0f0e Mon Sep 17 00:00:00 2001
+From: Luca Weiss <luca@z3ntu.xyz>
+Date: Mon, 9 Jan 2017 16:47:08 +0100
+Subject: [PATCH] Add jsp first try & service stuff & rename domains to domain
+ & moar
+
+---
+ .idea/artifacts/ViennaRuns_Java_war.xml            |   8 ++
+ .idea/artifacts/ViennaRuns_Java_war_exploded.xml   |  30 ++++++
+ .../16f640f8-2ca5-4a76-855c-f7f0cf5d68c4.xml       | 102 ---------------------
+ .idea/misc.xml                                     |   6 +-
+ ViennaRuns_Java.iml                                |  34 ++++---
+ pom.xml                                            |  43 +++++++++
+ src/main/java/{domains => domain}/BaseModel.java   |   2 +-
+ .../java/{domains => domain}/FeelingAfterRun.java  |   2 +-
+ src/main/java/{domains => domain}/Run.java         |   2 +-
+ src/main/java/{domains => domain}/User.java        |   2 +-
+ .../java/persistence/AbstractJdbcRepository.java   |   2 +-
+ .../persistence/FeelingAfterRunJdbcRepository.java |   2 +-
+ src/main/java/persistence/JdbcRepository.java      |   2 +-
+ src/main/java/persistence/RunJdbcRepository.java   |   6 +-
+ src/main/java/persistence/UserJdbcRepository.java  |   8 +-
+ src/main/java/presentation/UserSearchServlet.java  |  48 ++++++++++
+ src/main/java/service/ServiceBase.java             |  27 ++++++
+ src/main/java/service/UserSearchService.java       |  43 +++++++++
+ src/main/webapp/WEB-INF/jsps/listUsers.jsp         |  47 ++++++++++
+ src/test/java/domaintests/FeelingAfterRunTest.java |   2 +-
+ src/test/java/domaintests/RunTest.java             |   6 +-
+ src/test/java/domaintests/UserTest.java            |   2 +-
+ 22 files changed, 290 insertions(+), 136 deletions(-)
+ create mode 100644 .idea/artifacts/ViennaRuns_Java_war.xml
+ create mode 100644 .idea/artifacts/ViennaRuns_Java_war_exploded.xml
+ delete mode 100644 .idea/dataSources/16f640f8-2ca5-4a76-855c-f7f0cf5d68c4.xml
+ rename src/main/java/{domains => domain}/BaseModel.java (98%)
+ rename src/main/java/{domains => domain}/FeelingAfterRun.java (97%)
+ rename src/main/java/{domains => domain}/Run.java (99%)
+ rename src/main/java/{domains => domain}/User.java (98%)
+ create mode 100644 src/main/java/presentation/UserSearchServlet.java
+ create mode 100644 src/main/java/service/ServiceBase.java
+ create mode 100644 src/main/java/service/UserSearchService.java
+ create mode 100644 src/main/webapp/WEB-INF/jsps/listUsers.jsp
+
+diff --git a/.idea/artifacts/ViennaRuns_Java_war.xml b/.idea/artifacts/ViennaRuns_Java_war.xml
+new file mode 100644
+index 0000000..4d30cdb
+--- /dev/null
++++ b/.idea/artifacts/ViennaRuns_Java_war.xml
+@@ -0,0 +1,8 @@
++<component name="ArtifactManager">
++  <artifact type="war" name="ViennaRuns_Java:war">
++    <output-path>$PROJECT_DIR$/target</output-path>
++    <root id="archive" name="viennaruns-1.0-SNAPSHOT.war">
++      <element id="artifact" artifact-name="ViennaRuns_Java:war exploded" />
++    </root>
++  </artifact>
++</component>
+\ No newline at end of file
+diff --git a/.idea/artifacts/ViennaRuns_Java_war_exploded.xml b/.idea/artifacts/ViennaRuns_Java_war_exploded.xml
+new file mode 100644
+index 0000000..0b7f9cd
+--- /dev/null
++++ b/.idea/artifacts/ViennaRuns_Java_war_exploded.xml
+@@ -0,0 +1,30 @@
++<component name="ArtifactManager">
++  <artifact type="exploded-war" name="ViennaRuns_Java:war exploded">
++    <output-path>$PROJECT_DIR$/target/viennaruns-1.0-SNAPSHOT</output-path>
++    <root id="root">
++      <element id="directory" name="WEB-INF">
++        <element id="directory" name="classes">
++          <element id="module-output" name="ViennaRuns_Java" />
++        </element>
++        <element id="directory" name="lib">
++          <element id="library" level="project" name="Maven: javax.servlet:javax.servlet-api:4.0.0-b01" />
++          <element id="library" level="project" name="Maven: javax.servlet:jsp-api:2.0" />
++          <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.4" />
++          <element id="library" level="project" name="Maven: javax.servlet.jsp.jstl:jstl-api:1.2" />
++          <element id="library" level="project" name="Maven: javax.servlet.jsp:jsp-api:2.1" />
++          <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
++          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:6.0.5" />
++          <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.4" />
++          <element id="library" level="project" name="Maven: org.hsqldb:hsqldb:2.3.3" />
++          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.12" />
++          <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.1.3" />
++          <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.1.3" />
++        </element>
++      </element>
++      <element id="directory" name="META-INF">
++        <element id="file-copy" path="$PROJECT_DIR$/target/viennaruns-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
++      </element>
++      <element id="javaee-facet-resources" facet="ViennaRuns_Java/web/Web" />
++    </root>
++  </artifact>
++</component>
+\ No newline at end of file
+diff --git a/.idea/dataSources/16f640f8-2ca5-4a76-855c-f7f0cf5d68c4.xml b/.idea/dataSources/16f640f8-2ca5-4a76-855c-f7f0cf5d68c4.xml
+deleted file mode 100644
+index 13b4b7e..0000000
+--- a/.idea/dataSources/16f640f8-2ca5-4a76-855c-f7f0cf5d68c4.xml
++++ /dev/null
+@@ -1,102 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<dataSource name="viennaruns@private.z3ntu.xyz">
+-  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.0">
+-    <root id="1"/>
+-    <schema id="2" parent="1" name="viennaruns">
+-      <Current>1</Current>
+-      <Visible>1</Visible>
+-    </schema>
+-    <schema id="3" parent="1" name="information_schema"/>
+-    <table id="4" parent="2" name="FeelingAfterRun"/>
+-    <table id="5" parent="2" name="Run"/>
+-    <table id="6" parent="2" name="User"/>
+-    <column id="7" parent="4" name="far_id">
+-      <Position>1</Position>
+-      <DataType>int(11)|0</DataType>
+-      <NotNull>1</NotNull>
+-      <SequenceIdentity>1</SequenceIdentity>
+-    </column>
+-    <column id="8" parent="4" name="far_feeling">
+-      <Position>2</Position>
+-      <DataType>varchar(255)|0</DataType>
+-    </column>
+-    <key id="9" parent="4" name="PRIMARY">
+-      <ColNames>far_id</ColNames>
+-      <Primary>1</Primary>
+-    </key>
+-    <column id="10" parent="5" name="r_id">
+-      <Position>1</Position>
+-      <DataType>int(11)|0</DataType>
+-      <NotNull>1</NotNull>
+-      <SequenceIdentity>1</SequenceIdentity>
+-    </column>
+-    <column id="11" parent="5" name="r_user">
+-      <Position>2</Position>
+-      <DataType>int(11)|0</DataType>
+-    </column>
+-    <column id="12" parent="5" name="r_distance">
+-      <Position>3</Position>
+-      <DataType>decimal(18)|0</DataType>
+-    </column>
+-    <column id="13" parent="5" name="r_duration">
+-      <Position>4</Position>
+-      <DataType>int(11)|0</DataType>
+-    </column>
+-    <column id="14" parent="5" name="r_date">
+-      <Position>5</Position>
+-      <DataType>datetime|0</DataType>
+-    </column>
+-    <column id="15" parent="5" name="r_feeling">
+-      <Position>6</Position>
+-      <DataType>int(11)|0</DataType>
+-    </column>
+-    <index id="16" parent="5" name="Run_FeelingAfterRun_far_id_fk">
+-      <ColNames>r_feeling</ColNames>
+-    </index>
+-    <index id="17" parent="5" name="Run_User_u_id_fk">
+-      <ColNames>r_user</ColNames>
+-    </index>
+-    <key id="18" parent="5" name="PRIMARY">
+-      <ColNames>r_id</ColNames>
+-      <Primary>1</Primary>
+-    </key>
+-    <foreign-key id="19" parent="5" name="Run_User_u_id_fk">
+-      <ColNames>r_user</ColNames>
+-      <RefSchemaName>viennaruns</RefSchemaName>
+-      <RefTableName>User</RefTableName>
+-      <RefColNames>u_id</RefColNames>
+-    </foreign-key>
+-    <foreign-key id="20" parent="5" name="Run_FeelingAfterRun_far_id_fk">
+-      <ColNames>r_feeling</ColNames>
+-      <RefSchemaName>viennaruns</RefSchemaName>
+-      <RefTableName>FeelingAfterRun</RefTableName>
+-      <RefColNames>far_id</RefColNames>
+-    </foreign-key>
+-    <column id="21" parent="6" name="u_id">
+-      <Position>1</Position>
+-      <DataType>int(11)|0</DataType>
+-      <NotNull>1</NotNull>
+-      <SequenceIdentity>1</SequenceIdentity>
+-    </column>
+-    <column id="22" parent="6" name="u_password">
+-      <Position>2</Position>
+-      <DataType>varchar(255)|0</DataType>
+-    </column>
+-    <column id="23" parent="6" name="u_runninggroup">
+-      <Position>3</Position>
+-      <DataType>int(11)|0</DataType>
+-    </column>
+-    <column id="24" parent="6" name="u_weight">
+-      <Position>4</Position>
+-      <DataType>decimal(18)|0</DataType>
+-    </column>
+-    <column id="25" parent="6" name="u_username">
+-      <Position>5</Position>
+-      <DataType>varchar(255)|0</DataType>
+-    </column>
+-    <key id="26" parent="6" name="PRIMARY">
+-      <ColNames>u_id</ColNames>
+-      <Primary>1</Primary>
+-    </key>
+-  </database-model>
+-</dataSource>
+\ No newline at end of file
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+index ae11020..5b6a5c4 100644
+--- a/.idea/misc.xml
++++ b/.idea/misc.xml
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="EntryPointsManager">
+-    <entry_points version="2.0" />
++  <component name="FrameworkDetectionExcludesConfiguration">
++    <file type="web" url="file://$PROJECT_DIR$" />
+   </component>
+   <component name="MavenProjectsManager">
+     <option name="originalFiles">
+@@ -10,7 +10,7 @@
+       </list>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file
+diff --git a/ViennaRuns_Java.iml b/ViennaRuns_Java.iml
+index ef2655b..ba15392 100644
+--- a/ViennaRuns_Java.iml
++++ b/ViennaRuns_Java.iml
+@@ -1,6 +1,19 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
++  <component name="FacetManager">
++    <facet type="web" name="Web">
++      <configuration>
++        <webroots>
++          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
++        </webroots>
++        <sourceRoots>
++          <root url="file://$MODULE_DIR$/src/main/java" />
++          <root url="file://$MODULE_DIR$/src/main/resources" />
++        </sourceRoots>
++      </configuration>
++    </facet>
++  </component>
++  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+     <output url="file://$MODULE_DIR$/target/classes" />
+     <output-test url="file://$MODULE_DIR$/target/test-classes" />
+     <content url="file://$MODULE_DIR$">
+@@ -11,17 +24,14 @@
+     </content>
+     <orderEntry type="inheritedJdk" />
+     <orderEntry type="sourceFolder" forTests="false" />
+-    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.4" level="project" />
+-    <orderEntry type="library" name="Maven: org.hsqldb:hsqldb:2.3.3" level="project" />
+-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.12" level="project" />
+-    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.1.3" level="project" />
+-    <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.1.3" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-all:1.3" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Maven: org.assertj:assertj-core:3.5.2" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Maven: pl.pragmatists:JUnitParams:1.0.5" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-all:1.10.19" level="project" />
++    <orderEntry type="library" name="bootstrap" level="application" />
++    <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:4.0.0-b01" level="project" />
++    <orderEntry type="library" name="Maven: javax.servlet:jsp-api:2.0" level="project" />
++    <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.4" level="project" />
++    <orderEntry type="library" name="Maven: javax.servlet.jsp.jstl:jstl-api:1.2" level="project" />
++    <orderEntry type="library" name="Maven: javax.servlet.jsp:jsp-api:2.1" level="project" />
++    <orderEntry type="library" name="Maven: javax.servlet:jstl:1.2" level="project" />
++    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:6.0.5" level="project" />
+     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.4" level="project" />
+     <orderEntry type="library" name="Maven: org.hsqldb:hsqldb:2.3.3" level="project" />
+     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.12" level="project" />
+diff --git a/pom.xml b/pom.xml
+index d8c18b9..89f3b4f 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -4,6 +4,8 @@
+          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+     <modelVersion>4.0.0</modelVersion>
+ 
++    <packaging>war</packaging>
++
+     <groupId>io.github.spengergasse.ViennaRuns</groupId>
+     <artifactId>viennaruns</artifactId>
+     <version>1.0-SNAPSHOT</version>
+@@ -27,9 +29,50 @@
+         <assertj.version>3.5.2</assertj.version>
+         <junitparams.version>1.0.5</junitparams.version>
+         <mockito.version>1.10.19</mockito.version>
++        <!-- web -->
++        <servlet-api-version>4.0.0-b01</servlet-api-version>
++        <jsp-api-version>2.0</jsp-api-version>
++        <jstl-api-version>1.2</jstl-api-version>
+     </properties>
+ 
+     <dependencies>
++        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
++        <dependency>
++            <groupId>javax.servlet</groupId>
++            <artifactId>javax.servlet-api</artifactId>
++            <version>${servlet-api-version}</version>
++        </dependency>
++
++        <!-- https://mvnrepository.com/artifact/javax.servlet/jsp-api -->
++        <dependency>
++            <groupId>javax.servlet</groupId>
++            <artifactId>jsp-api</artifactId>
++            <version>${jsp-api-version}</version>
++        </dependency>
++
++        <!-- https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/jstl-api -->
++        <dependency>
++            <groupId>javax.servlet.jsp.jstl</groupId>
++            <artifactId>jstl-api</artifactId>
++            <version>${jstl-api-version}</version>
++        </dependency>
++
++        <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
++        <dependency>
++            <groupId>javax.servlet</groupId>
++            <artifactId>jstl</artifactId>
++            <version>1.2</version>
++        </dependency>
++
++        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
++        <dependency>
++            <groupId>mysql</groupId>
++            <artifactId>mysql-connector-java</artifactId>
++            <version>6.0.5</version>
++        </dependency>
++
++
++
+         <!-- utility libraries -->
+         <dependency>
+             <groupId>org.apache.commons</groupId>
+diff --git a/src/main/java/domains/BaseModel.java b/src/main/java/domain/BaseModel.java
+similarity index 98%
+rename from src/main/java/domains/BaseModel.java
+rename to src/main/java/domain/BaseModel.java
+index 5371c30..5ee8622 100644
+--- a/src/main/java/domains/BaseModel.java
++++ b/src/main/java/domain/BaseModel.java
+@@ -1,4 +1,4 @@
+-package domains;
++package domain;
+ 
+ import foundation.Ensurer;
+ 
+diff --git a/src/main/java/domains/FeelingAfterRun.java b/src/main/java/domain/FeelingAfterRun.java
+similarity index 97%
+rename from src/main/java/domains/FeelingAfterRun.java
+rename to src/main/java/domain/FeelingAfterRun.java
+index fa13948..5a67b0f 100644
+--- a/src/main/java/domains/FeelingAfterRun.java
++++ b/src/main/java/domain/FeelingAfterRun.java
+@@ -1,4 +1,4 @@
+-package domains;
++package domain;
+ 
+ public class FeelingAfterRun extends BaseModel<FeelingAfterRun, Long> {
+ 
+diff --git a/src/main/java/domains/Run.java b/src/main/java/domain/Run.java
+similarity index 99%
+rename from src/main/java/domains/Run.java
+rename to src/main/java/domain/Run.java
+index 8baa9fc..6eee3d3 100644
+--- a/src/main/java/domains/Run.java
++++ b/src/main/java/domain/Run.java
+@@ -1,4 +1,4 @@
+-package domains;
++package domain;
+ 
+ 
+ import java.sql.Date;
+diff --git a/src/main/java/domains/User.java b/src/main/java/domain/User.java
+similarity index 98%
+rename from src/main/java/domains/User.java
+rename to src/main/java/domain/User.java
+index 2e4ad31..d8382c3 100644
+--- a/src/main/java/domains/User.java
++++ b/src/main/java/domain/User.java
+@@ -1,4 +1,4 @@
+-package domains;
++package domain;
+ 
+ public class User extends BaseModel<User, Long> {
+ 
+diff --git a/src/main/java/persistence/AbstractJdbcRepository.java b/src/main/java/persistence/AbstractJdbcRepository.java
+index d4d125d..dcd69c3 100644
+--- a/src/main/java/persistence/AbstractJdbcRepository.java
++++ b/src/main/java/persistence/AbstractJdbcRepository.java
+@@ -1,6 +1,6 @@
+ package persistence;
+ 
+-import domains.BaseModel;
++import domain.BaseModel;
+ import org.hsqldb.types.Types;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+diff --git a/src/main/java/persistence/FeelingAfterRunJdbcRepository.java b/src/main/java/persistence/FeelingAfterRunJdbcRepository.java
+index b9ef575..6e6c1bc 100644
+--- a/src/main/java/persistence/FeelingAfterRunJdbcRepository.java
++++ b/src/main/java/persistence/FeelingAfterRunJdbcRepository.java
+@@ -1,6 +1,6 @@
+ package persistence;
+ 
+-import domains.FeelingAfterRun;
++import domain.FeelingAfterRun;
+ 
+ import java.sql.Connection;
+ import java.sql.PreparedStatement;
+diff --git a/src/main/java/persistence/JdbcRepository.java b/src/main/java/persistence/JdbcRepository.java
+index c51742b..d53587f 100644
+--- a/src/main/java/persistence/JdbcRepository.java
++++ b/src/main/java/persistence/JdbcRepository.java
+@@ -1,6 +1,6 @@
+ package persistence;
+ 
+-import domains.BaseModel;
++import domain.BaseModel;
+ 
+ import java.sql.Connection;
+ import java.util.List;
+diff --git a/src/main/java/persistence/RunJdbcRepository.java b/src/main/java/persistence/RunJdbcRepository.java
+index 4a71427..10b4d8b 100644
+--- a/src/main/java/persistence/RunJdbcRepository.java
++++ b/src/main/java/persistence/RunJdbcRepository.java
+@@ -1,8 +1,8 @@
+ package persistence;
+ 
+-import domains.FeelingAfterRun;
+-import domains.Run;
+-import domains.User;
++import domain.FeelingAfterRun;
++import domain.Run;
++import domain.User;
+ 
+ import java.sql.Connection;
+ import java.sql.PreparedStatement;
+diff --git a/src/main/java/persistence/UserJdbcRepository.java b/src/main/java/persistence/UserJdbcRepository.java
+index 2bffdfd..1f49bb4 100644
+--- a/src/main/java/persistence/UserJdbcRepository.java
++++ b/src/main/java/persistence/UserJdbcRepository.java
+@@ -1,6 +1,6 @@
+ package persistence;
+ 
+-import domains.User;
++import domain.User;
+ 
+ import java.sql.Connection;
+ import java.sql.PreparedStatement;
+@@ -54,7 +54,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
+     }
+ 
+     @Override
+-    protected int insert(Connection con, User entity) throws PersistenceException {
++    public int insert(Connection con, User entity) throws PersistenceException {
+         if (insertStatement == null) {
+             try {
+                 insertStatement = con.prepareStatement(String.format("INSERT INTO %s (u_user,u_password) VALUES(%s,%s)", tname, entity.getName(), entity.getPassword()));
+@@ -74,7 +74,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
+     }
+ 
+     @Override
+-    protected int update(Connection con, User entity) throws PersistenceException {
++    public int update(Connection con, User entity) throws PersistenceException {
+         if (updateStatement == null) {
+             try {
+                 updateStatement = con.prepareStatement(String.format("UPDATE %s SET u_user=%s,u_password=%s WHERE u_id=%s", tname, entity.getName(), entity.getPassword(), entity.getId()));
+@@ -94,7 +94,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
+     }
+ 
+     @Override
+-    protected void storeDeleteByIdStmt(PreparedStatement deleteByIdStmt) {
++    public void storeDeleteByIdStmt(PreparedStatement deleteByIdStmt) {
+         if (deleteByIdStmt != null) {
+             deleteStatement = deleteByIdStmt;
+         }
+diff --git a/src/main/java/presentation/UserSearchServlet.java b/src/main/java/presentation/UserSearchServlet.java
+new file mode 100644
+index 0000000..a457305
+--- /dev/null
++++ b/src/main/java/presentation/UserSearchServlet.java
+@@ -0,0 +1,48 @@
++package presentation;
++
++import domain.User;
++import persistence.UserJdbcRepository;
++import service.UserSearchService;
++
++import javax.servlet.ServletException;
++import javax.servlet.annotation.WebServlet;
++import javax.servlet.http.HttpServlet;
++import javax.servlet.http.HttpServletRequest;
++import javax.servlet.http.HttpServletResponse;
++import java.io.IOException;
++import java.util.List;
++
++/**
++ * Written by Luca Weiss (z3ntu)
++ * https://github.com/z3ntu
++ */
++@WebServlet(name = "search", urlPatterns = "/search")
++public class UserSearchServlet extends HttpServlet {
++
++    private UserSearchService service;
++
++    @Override
++    public void init() throws ServletException {
++        super.init();
++        service = new UserSearchService(new UserJdbcRepository());
++    }
++
++    @Override
++    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
++        handleRequest(req, resp);
++    }
++
++    @Override
++    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
++        handleRequest(req, resp);
++    }
++
++    private void handleRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
++        String searchParam = req.getParameter("search");
++        List<User> users = service.search(searchParam);
++
++        req.setAttribute("users", users);
++        req.getRequestDispatcher("/WEB-INF/jsps/listUsers.jsp").forward(req, resp);
++
++    }
++}
+diff --git a/src/main/java/service/ServiceBase.java b/src/main/java/service/ServiceBase.java
+new file mode 100644
+index 0000000..ea2556a
+--- /dev/null
++++ b/src/main/java/service/ServiceBase.java
+@@ -0,0 +1,27 @@
++package service;
++
++import java.sql.Connection;
++import java.sql.DriverManager;
++import java.sql.SQLException;
++
++/**
++ * Written by Luca Weiss (z3ntu)
++ * https://github.com/z3ntu
++ */
++public class ServiceBase {
++
++    private static Connection conn;
++
++    public Connection getDb() {
++        if (conn == null) {
++            try {
++                Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
++//                conn = DriverManager.getConnection("jdbc:mysql://hostname/database?user=user&password=password");
++            } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException e) {
++                e.printStackTrace();
++                return null;
++            }
++        }
++        return conn;
++    }
++}
+diff --git a/src/main/java/service/UserSearchService.java b/src/main/java/service/UserSearchService.java
+new file mode 100644
+index 0000000..d265eac
+--- /dev/null
++++ b/src/main/java/service/UserSearchService.java
+@@ -0,0 +1,43 @@
++package service;
++
++import domain.User;
++import persistence.UserJdbcRepository;
++
++import java.util.List;
++import java.util.Optional;
++
++/**
++ * Written by Luca Weiss (z3ntu)
++ * https://github.com/z3ntu
++ */
++public class UserSearchService extends ServiceBase {
++    public static final String ASTERISK = "*";
++
++    private final UserJdbcRepository userRepository;
++
++    public UserSearchService(UserJdbcRepository userRepository) {
++        this.userRepository = userRepository;
++    }
++
++    /**
++     * null and empty strings will be mapped to wildcard * search
++     *
++     * @param searchString
++     * @return
++     */
++    public List<User> search(String searchString) {
++        System.out.println("HELLO"); // TODO: Remove System.out.println
++//        userRepository.insert(getDb(), new User(0L, 0, "Lukas", "penis"));
++        String safeSearchString = Optional.ofNullable(searchString)
++                .filter(s -> !s.trim().isEmpty())
++                .orElse(ASTERISK);
++        try {
++            if (ASTERISK.equals(safeSearchString))
++                return userRepository.findAll(getDb());
++            //                : userRepository.findByNameLike(safeSearchString);
++        } catch (Exception e) {
++            e.printStackTrace();
++        }
++        return null;
++    }
++}
+diff --git a/src/main/webapp/WEB-INF/jsps/listUsers.jsp b/src/main/webapp/WEB-INF/jsps/listUsers.jsp
+new file mode 100644
+index 0000000..4879dcd
+--- /dev/null
++++ b/src/main/webapp/WEB-INF/jsps/listUsers.jsp
+@@ -0,0 +1,47 @@
++<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <meta charset="UTF-8">
++    <title>Personensuche</title>
++    <link rel="stylesheet" href="/fake.css"/>
++    <!-- Latest compiled and minified CSS -->
++    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
++          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
++    <!-- Optional theme -->
++    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
++          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
++</head>
++<body>
++<div class="container">
++    <h1>Personensuche</h1>
++    <form class="form-horizontal" action="search" method="POST">
++        <div class="form-group">
++            <label for="search">Namesteil:</label>
++            <input id="search" name="search" class="form-control" type="text" placeholder="Namensteil">
++        </div>
++        <button type="submit" class="btn btn-default">Search</button>
++    </form>
++    <table class="table table-striped">
++        <thead>
++        <tr>
++            <th>Vorname</th>
++            <th>Nachname</th>
++        </tr>
++        </thead>
++        <tbody>
++        <c:forEach var="person" items="${persons}">
++            <tr>
++                <td>${person.firstName}</td>
++                <td>${person.lastName}</td>
++            </tr>
++        </c:forEach>
++        </tbody>
++    </table>
++</div>
++<!-- Latest compiled and minified JavaScript -->
++<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
++        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
++        crossorigin="anonymous"></script>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/src/test/java/domaintests/FeelingAfterRunTest.java b/src/test/java/domaintests/FeelingAfterRunTest.java
+index 53c83a4..099e8a3 100644
+--- a/src/test/java/domaintests/FeelingAfterRunTest.java
++++ b/src/test/java/domaintests/FeelingAfterRunTest.java
+@@ -1,6 +1,6 @@
+ package domaintests;
+ 
+-import domains.FeelingAfterRun;
++import domain.FeelingAfterRun;
+ import junitparams.JUnitParamsRunner;
+ import org.junit.Test;
+ import org.junit.runner.RunWith;
+diff --git a/src/test/java/domaintests/RunTest.java b/src/test/java/domaintests/RunTest.java
+index c3b421e..80d6ecb 100644
+--- a/src/test/java/domaintests/RunTest.java
++++ b/src/test/java/domaintests/RunTest.java
+@@ -1,8 +1,8 @@
+ package domaintests;
+ 
+-import domains.FeelingAfterRun;
+-import domains.Run;
+-import domains.User;
++import domain.FeelingAfterRun;
++import domain.Run;
++import domain.User;
+ import junitparams.JUnitParamsRunner;
+ import org.junit.Test;
+ import org.junit.runner.RunWith;
+diff --git a/src/test/java/domaintests/UserTest.java b/src/test/java/domaintests/UserTest.java
+index 2d9338b..df8fbfb 100644
+--- a/src/test/java/domaintests/UserTest.java
++++ b/src/test/java/domaintests/UserTest.java
+@@ -1,6 +1,6 @@
+ package domaintests;
+ 
+-import domains.User;
++import domain.User;
+ import junitparams.JUnitParamsRunner;
+ import org.junit.Test;
+ import org.junit.runner.RunWith;
+-- 
+2.11.0
+

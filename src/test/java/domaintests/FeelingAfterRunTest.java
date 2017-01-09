@@ -1,6 +1,6 @@
 package domaintests;
 
-import domains.FeelingAfterRun;
+import domain.FeelingAfterRun;
 import junitparams.JUnitParamsRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;

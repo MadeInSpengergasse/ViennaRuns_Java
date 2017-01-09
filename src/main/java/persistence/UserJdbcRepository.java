@@ -1,6 +1,6 @@
 package persistence;
 
-import domains.User;
+import domain.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -54,7 +54,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
     }
 
     @Override
-    protected int insert(Connection con, User entity) throws PersistenceException {
+    public int insert(Connection con, User entity) throws PersistenceException {
         if (insertStatement == null) {
             try {
                 insertStatement = con.prepareStatement(String.format("INSERT INTO %s (u_user,u_password) VALUES(%s,%s)", tname, entity.getName(), entity.getPassword()));
@@ -74,7 +74,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
     }
 
     @Override
-    protected int update(Connection con, User entity) throws PersistenceException {
+    public int update(Connection con, User entity) throws PersistenceException {
         if (updateStatement == null) {
             try {
                 updateStatement = con.prepareStatement(String.format("UPDATE %s SET u_user=%s,u_password=%s WHERE u_id=%s", tname, entity.getName(), entity.getPassword(), entity.getId()));
@@ -94,7 +94,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
     }
 
     @Override
-    protected void storeDeleteByIdStmt(PreparedStatement deleteByIdStmt) {
+    public void storeDeleteByIdStmt(PreparedStatement deleteByIdStmt) {
         if (deleteByIdStmt != null) {
             deleteStatement = deleteByIdStmt;
         }

@@ -1,4 +1,4 @@
-package domains;
+package domain;
 
 public class FeelingAfterRun extends BaseModel<FeelingAfterRun, Long> {
 

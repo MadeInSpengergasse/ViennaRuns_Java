@@ -1,8 +1,8 @@
 package persistence;
 
-import domains.FeelingAfterRun;
-import domains.Run;
-import domains.User;
+import domain.FeelingAfterRun;
+import domain.Run;
+import domain.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

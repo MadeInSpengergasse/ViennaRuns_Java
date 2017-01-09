@@ -1,6 +1,6 @@
 package persistence;
 
-import domains.BaseModel;
+import domain.BaseModel;
 
 import java.sql.Connection;
 import java.util.List;
