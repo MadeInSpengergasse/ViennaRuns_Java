@@ -25,7 +25,7 @@ public class FeelingAfterRunJdbcRepository extends AbstractJdbcRepository<Feelin
         if (findByIdStatement == null) {
             findByIdStatement = con.prepareStatement(String.format("SELECT * FROM %s WHERE %s=?", tname, primaryKeyColumnName));
         }
-        findByIdStatement.setString(1, id.toString());
+        findByIdStatement.setLong(1, id);
         ResultSet res = findByIdStatement.executeQuery();
 
         FeelingAfterRun f = new FeelingAfterRun(res.getLong(primaryKeyColumnName), res.getInt("far_version"), res.getString("far_feeling"));

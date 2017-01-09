@@ -1,10 +1,13 @@
 package service;
 
 import domain.FeelingAfterRun;
+import domain.Run;
 import domain.User;
 import persistence.FeelingAfterRunJdbcRepository;
+import persistence.RunJdbcRepository;
 import persistence.UserJdbcRepository;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +32,11 @@ public class UserSearchService extends ServiceBase {
      */
     public List<User> search(String searchString) {
         System.out.println("HELLO"); // TODO: Remove System.out.println
-//        userRepository.insert(getDb(), new User(0L, 0, "Lukas", "somepassword"));
-        new FeelingAfterRunJdbcRepository().insert(getDb(), new FeelingAfterRun(0L, 0, "Great"));
+        User a = new User(5L, 0, "Lukas", "somepassword");
+//        userRepository.insert(getDb(), a);
+        FeelingAfterRun b = new FeelingAfterRun(3L, 0, "Great");
+//        new FeelingAfterRunJdbcRepository().insert(getDb(), b);
+        new RunJdbcRepository().insert(getDb(), new Run(0L, 0, a, 200.5f, 100, Date.valueOf("2017-01-01"), b));
         String safeSearchString = Optional.ofNullable(searchString)
                 .filter(s -> !s.trim().isEmpty())
                 .orElse(ASTERISK);
