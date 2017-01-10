@@ -10,7 +10,6 @@ CREATE TABLE User
     u_password VARCHAR(255),
     u_runninggroup INT(11),
     u_weight DECIMAL(18),
-    u_username VARCHAR(255)
 );
 CREATE TABLE FeelingAfterRun
 (

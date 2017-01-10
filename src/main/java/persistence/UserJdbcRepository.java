@@ -2,10 +2,7 @@ package persistence;
 
 import domain.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -24,14 +21,15 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
     @Override
     public Optional<User> findById(Connection con, Long id) throws Exception {
         if (findByIdStatement == null) {
-            findByIdStatement = con.prepareStatement(String.format("SELECT * FROM %s WHERE %s=?", primaryKeyColumnName, tname));
+            findByIdStatement = con.prepareStatement(String.format("SELECT * FROM %s WHERE %s=?", tname, primaryKeyColumnName));
         }
         findByIdStatement.setLong(1, id);
         ResultSet res = findByIdStatement.executeQuery();
-
-        User u = new User(res.getLong(primaryKeyColumnName), res.getInt("u_version"), res.getString("u_name"), res.getString("u_password"));
-
-        return Optional.of(u);
+        User u = null;
+        if (res.next()) {
+            u = new User(res.getLong(primaryKeyColumnName), res.getInt("u_version"), res.getString("u_name"), res.getString("u_password"));
+        }
+        return Optional.ofNullable(u);
     }
 
     @Override
@@ -58,7 +56,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
     public int insert(Connection con, User entity) throws PersistenceException {
         if (insertStatement == null) {
             try {
-                insertStatement = con.prepareStatement(String.format("INSERT INTO %s (u_name, u_password) VALUES (?, ?)", tname));
+                insertStatement = con.prepareStatement(String.format("INSERT INTO %s (u_name, u_password) VALUES (?, ?)", tname), Statement.RETURN_GENERATED_KEYS);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -69,6 +67,13 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
             insertStatement.setString(1, entity.getName());
             insertStatement.setString(2, entity.getPassword());
             result = (insertStatement.execute()) ? 1 : 0;
+
+            ResultSet rs = insertStatement.getGeneratedKeys();
+            long id = 0;
+            if (rs.next()) {
+                id = rs.getLong(1);
+            }
+            entity.setId(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,7 +84,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
     public int update(Connection con, User entity) throws PersistenceException {
         if (updateStatement == null) {
             try {
-                updateStatement = con.prepareStatement(String.format("UPDATE %s SET u_user=?, u_password=? WHERE %s=?", primaryKeyColumnName, tname));
+                updateStatement = con.prepareStatement(String.format("UPDATE %s SET u_name=?, u_password=? WHERE %s=?", tname, primaryKeyColumnName));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
