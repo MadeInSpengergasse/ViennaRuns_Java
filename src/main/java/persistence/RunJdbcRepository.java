@@ -4,10 +4,7 @@ import domain.FeelingAfterRun;
 import domain.Run;
 import domain.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +59,7 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
     public int insert(Connection con, Run entity) throws PersistenceException {
         if (insertStatement == null) {
             try {
-                insertStatement = con.prepareStatement(String.format("INSERT INTO %s (r_user, r_distance, r_duration, r_date, r_feeling) VALUES(?, ?, ?, ?, ?)", tname));
+                insertStatement = con.prepareStatement(String.format("INSERT INTO %s (r_user, r_distance, r_duration, r_date, r_feeling) VALUES(?, ?, ?, ?, ?)", tname), Statement.RETURN_GENERATED_KEYS);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -72,9 +69,16 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
             insertStatement.setLong(1, entity.getUser().getId());
             insertStatement.setFloat(2, entity.getDistance());
             insertStatement.setLong(3, entity.getDuration());
-            insertStatement.setString(4, entity.getDate().toString()); // TODO: Really?
+            insertStatement.setString(4, entity.getDate().toString()); // TODO: Really like that?
             insertStatement.setLong(5, entity.getFeeling().getId());
             result = (insertStatement.execute()) ? 1 : 0;
+
+            ResultSet rs = insertStatement.getGeneratedKeys();
+            long id = 0;
+            if (rs.next()) {
+                id = rs.getLong(1);
+            }
+            entity.setId(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,7 +99,7 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
             insertStatement.setLong(1, entity.getUser().getId());
             insertStatement.setFloat(2, entity.getDistance());
             insertStatement.setLong(3, entity.getDuration());
-            insertStatement.setString(4, entity.getDate().toString()); // TODO: Really?
+            insertStatement.setString(4, entity.getDate().toString()); // TODO: Really like that?
             insertStatement.setLong(5, entity.getFeeling().getId());
             insertStatement.setLong(6, entity.getId());
             result = (updateStatement.execute()) ? 1 : 0;

@@ -2,10 +2,7 @@ package persistence;
 
 import domain.FeelingAfterRun;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -28,9 +25,11 @@ public class FeelingAfterRunJdbcRepository extends AbstractJdbcRepository<Feelin
         findByIdStatement.setLong(1, id);
         ResultSet res = findByIdStatement.executeQuery();
 
-        FeelingAfterRun f = new FeelingAfterRun(res.getLong(primaryKeyColumnName), res.getInt("far_version"), res.getString("far_feeling"));
-
-        return Optional.of(f);
+        FeelingAfterRun f = null;
+        if (res.next()) {
+            f = new FeelingAfterRun(res.getLong(primaryKeyColumnName), res.getInt("far_version"), res.getString("far_feeling"));
+        }
+        return Optional.ofNullable(f);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class FeelingAfterRunJdbcRepository extends AbstractJdbcRepository<Feelin
         if (insertStatement == null) {
             try {
                 //check
-                insertStatement = con.prepareStatement(String.format("INSERT INTO %s (far_feeling) VALUES(?)", tname));
+                insertStatement = con.prepareStatement(String.format("INSERT INTO %s (far_feeling) VALUES(?)", tname), Statement.RETURN_GENERATED_KEYS);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -62,6 +61,13 @@ public class FeelingAfterRunJdbcRepository extends AbstractJdbcRepository<Feelin
         try {
             insertStatement.setString(1, entity.getFeeling());
             result = (insertStatement.execute()) ? 1 : 0;
+
+            ResultSet rs = insertStatement.getGeneratedKeys();
+            long id = 0;
+            if (rs.next()) {
+                id = rs.getLong(1);
+            }
+            entity.setId(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,8 +83,6 @@ public class FeelingAfterRunJdbcRepository extends AbstractJdbcRepository<Feelin
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
         }
         int result = 0;
         try {
