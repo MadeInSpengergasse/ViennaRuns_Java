@@ -4,21 +4,18 @@ import domain.FeelingAfterRun;
 import domain.Run;
 import domain.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
 
-
     private static final String tname = "Run";
     private static final String tuser = "User";
     private static final String tfar = "FeelingAfterRun";
-    private static final Run run = new Run();
+    private static final String primaryKeyColumnName = "r_id";
+
     private static PreparedStatement findByIdStatement;
     private static PreparedStatement findAllStatement;
     private static PreparedStatement insertStatement;
@@ -28,14 +25,14 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
     @Override
     public Optional<Run> findById(Connection con, Long id) throws Exception {
         if (findByIdStatement == null) {
-            findByIdStatement = con.prepareStatement(String.format("SELECT * FROM %s INNER JOIN %s ON r_user = u_id INNER JOIN %s ON r_feeling=far_feeling WHERE id=%s", tname, tuser, tfar, id));
+            findByIdStatement = con.prepareStatement(String.format("SELECT * FROM %s INNER JOIN %s ON r_user = u_id INNER JOIN %s ON r_feeling=far_id WHERE %s=?", tname, tuser, primaryKeyColumnName, tfar));
         }
-        findByIdStatement.setString(1, id.toString());
+        findByIdStatement.setLong(1, id);
         ResultSet res = findByIdStatement.executeQuery();
 
-        User u = new User(res.getLong("id"), res.getInt("version"), res.getString("u_name"), res.getString("u_password"));
-        FeelingAfterRun far = new FeelingAfterRun(res.getLong("id"), res.getInt("version"), res.getString("far_feeling"));
-        Run r = new Run(res.getLong("id"), res.getInt("version"), u, res.getFloat("r_distance"), res.getInt("r_duration"), res.getDate("r_date"), far);
+        User u = new User(res.getLong("u_id"), res.getInt("u_version"), res.getString("u_name"), res.getString("u_password"));
+        FeelingAfterRun far = new FeelingAfterRun(res.getLong("far_id"), res.getInt("far_version"), res.getString("far_feeling"));
+        Run r = new Run(res.getLong(primaryKeyColumnName), res.getInt("r_version"), u, res.getFloat("r_distance"), res.getInt("r_duration"), res.getDate("r_date"), far);
 
         return Optional.of(r);
     }
@@ -49,9 +46,9 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
         List<Run> runs = new LinkedList<>();
 
         while (res.next()) {
-            User u = new User(res.getLong("id"), res.getInt("version"), res.getString("u_name"), res.getString("u_password"));
-            FeelingAfterRun far = new FeelingAfterRun(res.getLong("id"), res.getInt("version"), res.getString("far_feeling"));
-            Run r = new Run(res.getLong("id"), res.getInt("version"), u, res.getFloat("r_distance"), res.getInt("r_duration"), res.getDate("r_date"), far);
+            User u = new User(res.getLong("u_id"), res.getInt("u_version"), res.getString("u_name"), res.getString("u_password"));
+            FeelingAfterRun far = new FeelingAfterRun(res.getLong("far_id"), res.getInt("far_version"), res.getString("far_feeling"));
+            Run r = new Run(res.getLong(primaryKeyColumnName), res.getInt("r_version"), u, res.getFloat("r_distance"), res.getInt("r_duration"), res.getDate("r_date"), far);
 
             runs.add(r);
         }
@@ -59,19 +56,29 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
     }
 
     @Override
-    protected int insert(Connection con, Run entity) throws PersistenceException {
+    public int insert(Connection con, Run entity) throws PersistenceException {
         if (insertStatement == null) {
             try {
-                insertStatement = con.prepareStatement(String.format("INSERT INTO %s (r_user, r_distance, r_duration, r_date, r_feeling) VALUES(%s, %s, %s, %s, %s)", tname, entity.getUser().getId(), entity.getDistance(), entity.getDuration(), entity.getDate(), entity.getFeeling().getId()));
+                insertStatement = con.prepareStatement(String.format("INSERT INTO %s (r_user, r_distance, r_duration, r_date, r_feeling) VALUES(?, ?, ?, ?, ?)", tname), Statement.RETURN_GENERATED_KEYS);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
         }
         int result = 0;
         try {
+            insertStatement.setLong(1, entity.getUser().getId());
+            insertStatement.setFloat(2, entity.getDistance());
+            insertStatement.setLong(3, entity.getDuration());
+            insertStatement.setString(4, entity.getDate().toString()); // TODO: Really like that?
+            insertStatement.setLong(5, entity.getFeeling().getId());
             result = (insertStatement.execute()) ? 1 : 0;
+
+            ResultSet rs = insertStatement.getGeneratedKeys();
+            long id = 0;
+            if (rs.next()) {
+                id = rs.getLong(1);
+            }
+            entity.setId(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,18 +86,22 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
     }
 
     @Override
-    protected int update(Connection con, Run entity) throws PersistenceException {
+    public int update(Connection con, Run entity) throws PersistenceException {
         if (updateStatement == null) {
             try {
-                updateStatement = con.prepareStatement(String.format("UPDATE %s SET r_user=%s,r_distance=%s, r_duration=%s, r_date=%s, r_feeling=%s WHERE r_id=%s", tname, entity.getUser().getId(), entity.getDistance(), entity.getDuration(), entity.getDate(), entity.getFeeling().getId(), entity.getId()));
+                updateStatement = con.prepareStatement(String.format("UPDATE %s SET r_user=?,r_distance=?, r_duration=?, r_date=?, r_feeling=? WHERE %s=?", tname, primaryKeyColumnName));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
         }
         int result = 0;
         try {
+            insertStatement.setLong(1, entity.getUser().getId());
+            insertStatement.setFloat(2, entity.getDistance());
+            insertStatement.setLong(3, entity.getDuration());
+            insertStatement.setString(4, entity.getDate().toString()); // TODO: Really like that?
+            insertStatement.setLong(5, entity.getFeeling().getId());
+            insertStatement.setLong(6, entity.getId());
             result = (updateStatement.execute()) ? 1 : 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -117,6 +128,6 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
 
     @Override
     protected String getPrimaryKeyColumnName() {
-        return run.getId().toString();
+        return primaryKeyColumnName;
     }
 }

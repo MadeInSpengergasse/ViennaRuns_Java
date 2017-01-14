@@ -26,8 +26,6 @@ public class UserSearchService extends ServiceBase {
      * @return
      */
     public List<User> search(String searchString) {
-        System.out.println("HELLO"); // TODO: Remove System.out.println
-//        userRepository.insert(getDb(), new User(0L, 0, "Lukas", "penis"));
         String safeSearchString = Optional.ofNullable(searchString)
                 .filter(s -> !s.trim().isEmpty())
                 .orElse(ASTERISK);

@@ -10,6 +10,10 @@ public class User extends BaseModel<User, Long> {
         super();
     }
 
+    public User(String name, String password) {
+        this(-1L, -1, name, password);
+    }
+
     public User(final Long id, final Integer version, String name, String password) {
         super(id, version);
 
@@ -37,9 +41,8 @@ public class User extends BaseModel<User, Long> {
 
     @Override
     public int compareTo(User o) {
-        if (super._compareTo(o)==-1) return -1;
-        else
-        if(o.getName().equals(this.getName()) &&
+        if (super._compareTo(o) == -1) return -1;
+        else if (o.getName().equals(this.getName()) &&
                 o.getPassword().equals(this.getPassword()))
             return 0;
         else

@@ -16,6 +16,10 @@ public class Run extends BaseModel<Run, Long> {
         super();
     }
 
+    public Run(User user, Float distance, Integer duration, Date date, FeelingAfterRun feeling) {
+        this(-1L, -1, user, distance, duration, date, feeling);
+    }
+
     public Run(Long id, final Integer version, User user, Float distance, Integer duration, Date date, FeelingAfterRun feeling) {
         super(id, version);
 
@@ -24,7 +28,6 @@ public class Run extends BaseModel<Run, Long> {
         setDuration(duration);
         setDate(date);
         setFeeling(feeling);
-
     }
 
 
@@ -72,9 +75,8 @@ public class Run extends BaseModel<Run, Long> {
     @Override
     public int compareTo(Run o) {
 
-        if(super._compareTo(o)==-1) return -1;
-        else
-        if(o.getUser().compareTo(this.getUser()) == 0 &&
+        if (super._compareTo(o) == -1) return -1;
+        else if (o.getUser().compareTo(this.getUser()) == 0 &&
                 o.getDistance().equals(this.getDistance()) &&
                 o.getDuration().equals(this.getDuration()) &&
                 o.getDate().equals(this.getDate()) &&
