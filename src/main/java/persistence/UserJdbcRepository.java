@@ -14,6 +14,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
 
     private static PreparedStatement findByIdStatement;
     private static PreparedStatement findAllStatement;
+    private static PreparedStatement findByNameStatement;
     private static PreparedStatement insertStatement;
     private static PreparedStatement updateStatement;
     private static PreparedStatement deleteStatement;
@@ -99,6 +100,26 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
             e.printStackTrace();
         }
         return result;
+    }
+
+    public List<User> findByNameLike(Connection con, String like) throws SQLException {
+        if (findByNameStatement == null) {
+            findByNameStatement = con.prepareStatement(String.format("SELECT * FROM %s WHERE u_name LIKE ?", tname));
+        }
+        findByNameStatement.setString(1, "%" + like + "%");
+        ResultSet res = findByNameStatement.executeQuery();
+        List<User> users = new LinkedList<>();
+
+        while (res.next()) {
+            long id = res.getLong(primaryKeyColumnName);
+            Integer version = res.getInt("u_version");
+            String name = res.getString("u_name");
+            String password = res.getString("u_password");
+            User u = new User(id, version, name, password);
+
+            users.add(u);
+        }
+        return users;
     }
 
     @Override

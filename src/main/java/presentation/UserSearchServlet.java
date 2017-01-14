@@ -43,6 +43,5 @@ public class UserSearchServlet extends HttpServlet {
 
         req.setAttribute("users", users);
         req.getRequestDispatcher("/WEB-INF/jsps/listUsers.jsp").forward(req, resp);
-
     }
 }

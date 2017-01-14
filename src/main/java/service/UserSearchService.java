@@ -30,9 +30,9 @@ public class UserSearchService extends ServiceBase {
                 .filter(s -> !s.trim().isEmpty())
                 .orElse(ASTERISK);
         try {
-            if (ASTERISK.equals(safeSearchString))
-                return userRepository.findAll(getDb());
-            //                : userRepository.findByNameLike(safeSearchString);
+            return (ASTERISK.equals(safeSearchString))
+                    ? userRepository.findAll(getDb())
+                    : userRepository.findByNameLike(getDb(), safeSearchString);
         } catch (Exception e) {
             e.printStackTrace();
         }

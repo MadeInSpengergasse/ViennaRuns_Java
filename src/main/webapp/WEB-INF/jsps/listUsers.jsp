@@ -3,8 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Personensuche</title>
-    <link rel="stylesheet" href="/fake.css"/>
+    <title>Usersearch</title>
+    <%--<link rel="stylesheet" href="/fake.css"/>--%>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -14,26 +14,26 @@
 </head>
 <body>
 <div class="container">
-    <h1>Personensuche</h1>
+    <h1>Usersearch</h1>
     <form class="form-horizontal" action="search" method="POST">
         <div class="form-group">
-            <label for="search">Namesteil:</label>
-            <input id="search" name="search" class="form-control" type="text" placeholder="Namensteil">
+            <label for="search">Name:</label>
+            <input id="search" name="search" class="form-control" type="text" placeholder="Name">
         </div>
         <button type="submit" class="btn btn-default">Search</button>
     </form>
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Vorname</th>
-            <th>Nachname</th>
+            <th>Username</th>
+            <th>Password</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="person" items="${persons}">
+        <c:forEach var="user" items="${users}">
             <tr>
-                <td>${person.firstName}</td>
-                <td>${person.lastName}</td>
+                <td>${user.name}</td>
+                <td>${user.password}</td>
             </tr>
         </c:forEach>
         </tbody>

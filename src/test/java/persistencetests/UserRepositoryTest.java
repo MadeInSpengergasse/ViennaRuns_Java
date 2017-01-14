@@ -8,9 +8,7 @@ import service.ServiceBase;
 
 import java.sql.Connection;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by Jan Wadsak on 11/12/2016.
@@ -73,5 +71,20 @@ public class UserRepositoryTest {
         repo.delete(db, u);
         //if not present anymore
         assertFalse(repo.findById(db, u.getId()).isPresent());
+    }
+
+    @Test
+    public void testFindByNameLike() throws Exception {
+        UserJdbcRepository repo = new UserJdbcRepository();
+        Connection db = serviceBase.getDb();
+
+        User u = new User(
+                "usertobefound",
+                "somepassword");
+
+        repo.insert(db, u);
+
+        assertFalse(repo.findByNameLike(db, "tobefound").isEmpty());
+        assertTrue(repo.findByNameLike(db, "nonexistinguser").isEmpty());
     }
 }
