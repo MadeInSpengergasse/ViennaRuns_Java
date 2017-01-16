@@ -22,7 +22,7 @@ public class FeelingAfterRunRepositoryTest {
     @Test
     public void testInsert() throws Exception {
         FeelingAfterRunJdbcRepository repo = new FeelingAfterRunJdbcRepository();
-        Connection db = serviceBase.getDb();
+        Connection db = serviceBase.getTestDb();
 
         FeelingAfterRun f = new FeelingAfterRun("tobeinserted");
 
@@ -34,7 +34,7 @@ public class FeelingAfterRunRepositoryTest {
     @Test
     public void testUpdate() throws Exception {
         FeelingAfterRunJdbcRepository repo = new FeelingAfterRunJdbcRepository();
-        Connection db = serviceBase.getDb();
+        Connection db = serviceBase.getTestDb();
 
         FeelingAfterRun f = new FeelingAfterRun("shouldbeupdated");
 
@@ -54,7 +54,7 @@ public class FeelingAfterRunRepositoryTest {
     @Test
     public void testDelete() throws Exception {
         FeelingAfterRunJdbcRepository repo = new FeelingAfterRunJdbcRepository();
-        Connection db = serviceBase.getDb();
+        Connection db = serviceBase.getTestDb();
 
         FeelingAfterRun f = new FeelingAfterRun("shouldbedeleted");
 

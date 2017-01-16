@@ -25,16 +25,18 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
     @Override
     public Optional<Run> findById(Connection con, Long id) throws Exception {
         if (findByIdStatement == null) {
-            findByIdStatement = con.prepareStatement(String.format("SELECT * FROM %s INNER JOIN %s ON r_user = u_id INNER JOIN %s ON r_feeling=far_id WHERE %s=?", tname, tuser, primaryKeyColumnName, tfar));
+            findByIdStatement = con.prepareStatement(String.format("SELECT * FROM %s INNER JOIN %s ON r_user = u_id INNER JOIN %s ON r_feeling=far_id WHERE %s=?", tname, tuser, tfar, primaryKeyColumnName));
         }
         findByIdStatement.setLong(1, id);
         ResultSet res = findByIdStatement.executeQuery();
 
-        User u = new User(res.getLong("u_id"), res.getInt("u_version"), res.getString("u_name"), res.getString("u_password"));
-        FeelingAfterRun far = new FeelingAfterRun(res.getLong("far_id"), res.getInt("far_version"), res.getString("far_feeling"));
-        Run r = new Run(res.getLong(primaryKeyColumnName), res.getInt("r_version"), u, res.getFloat("r_distance"), res.getInt("r_duration"), res.getDate("r_date"), far);
-
-        return Optional.of(r);
+        Run r = null;
+        if(res.next()) {
+            User u = new User(res.getLong("u_id"), res.getInt("u_version"), res.getString("u_name"), res.getString("u_password"));
+            FeelingAfterRun far = new FeelingAfterRun(res.getLong("far_id"), res.getInt("far_version"), res.getString("far_feeling"));
+            r = new Run(res.getLong(primaryKeyColumnName), res.getInt("r_version"), u, res.getFloat("r_distance"), res.getInt("r_duration"), res.getDate("r_date"), far);
+        }
+        return Optional.ofNullable(r);
     }
 
     @Override

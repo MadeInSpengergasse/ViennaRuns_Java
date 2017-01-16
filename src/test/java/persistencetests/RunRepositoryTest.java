@@ -1,36 +1,49 @@
 package persistencetests;
 
+import domain.FeelingAfterRun;
+import domain.Run;
 import domain.User;
 import org.junit.Assert;
 import org.junit.Test;
+import persistence.FeelingAfterRunJdbcRepository;
+import persistence.RunJdbcRepository;
 import persistence.UserJdbcRepository;
 import service.ServiceBase;
 
 import java.sql.Connection;
+import java.sql.Date;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by Jan Wadsak on 11/12/2016.
  */
-public class UserRepositoryTest {
+public class RunRepositoryTest {
 
     private ServiceBase serviceBase = new ServiceBase();
 
     @Test
     public void testInsert() throws Exception {
-        UserJdbcRepository repo = new UserJdbcRepository();
+        UserJdbcRepository u_repo = new UserJdbcRepository();
+        FeelingAfterRunJdbcRepository f_repo = new FeelingAfterRunJdbcRepository();
+        RunJdbcRepository r_repo = new RunJdbcRepository();
         Connection db = serviceBase.getTestDb();
 
         User u = new User(
                 "inserted_name",
                 "inserted_password");
 
-        repo.insert(db, u);
+        FeelingAfterRun f = new FeelingAfterRun("tobeinserted");
 
-        Assert.assertNotNull(repo.findById(db, u.getId()));
+        Run r = new Run(u, 100f, 100, Date.valueOf("2016-09-09"), f);
+
+        u_repo.insert(db, u);
+        f_repo.insert(db, f);
+        r_repo.insert(db, r);
+
+        Assert.assertNotNull(r_repo.findById(db, r.getId()));
     }
-
+/*
     @Test
     public void testUpdate() throws Exception {
         UserJdbcRepository repo = new UserJdbcRepository();
@@ -87,4 +100,5 @@ public class UserRepositoryTest {
         assertFalse(repo.findByNameLike(db, "tobefound").isEmpty());
         assertTrue(repo.findByNameLike(db, "nonexistinguser").isEmpty());
     }
+    */
 }

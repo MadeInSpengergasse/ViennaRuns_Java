@@ -1,13 +1,13 @@
 package persistence;
 
 import domain.BaseModel;
-import org.hsqldb.types.Types;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 
 public abstract class AbstractJdbcRepository<DOMAIN extends BaseModel<DOMAIN,
         PRIMARY_KEY>, PRIMARY_KEY extends Number>

@@ -79,13 +79,15 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
         </dependency>
-        <!-- database drivers -->
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>${hsqldb.version}</version>
-            <!-- usually a good candidate for scope test too -->
-        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+<!--        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.193</version>
+        </dependency>-->
+
+
         <!-- logging libraries -->
         <dependency>
             <groupId>org.slf4j</groupId>
