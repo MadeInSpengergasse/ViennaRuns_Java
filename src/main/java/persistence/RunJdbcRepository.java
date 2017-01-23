@@ -93,7 +93,7 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
     public int update(Connection con, Run entity) throws PersistenceException {
         if (updateStatement == null) {
             try {
-                updateStatement = con.prepareStatement(String.format("UPDATE %s SET r_user=?,r_distance=?, r_duration=?, r_date=?, r_feeling=? WHERE %s=?", tname, primaryKeyColumnName));
+                updateStatement = con.prepareStatement(String.format("UPDATE %s SET r_version=?, r_user=?,r_distance=?, r_duration=?, r_date=?, r_feeling=? WHERE %s=?", tname, primaryKeyColumnName));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -116,12 +116,14 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
                 throw new PersistenceException();
             }
 
-            insertStatement.setLong(1, entity.getUser().getId());
-            insertStatement.setFloat(2, entity.getDistance());
-            insertStatement.setLong(3, entity.getDuration());
-            insertStatement.setString(4, entity.getDate().toString()); // TODO: Really like that?
-            insertStatement.setLong(5, entity.getFeeling().getId());
-            insertStatement.setLong(6, entity.getId());
+            updateStatement.setInt(1, ver+1);
+            updateStatement.setLong(2, entity.getUser().getId());
+            updateStatement.setFloat(3, entity.getDistance());
+            updateStatement.setLong(4, entity.getDuration());
+            updateStatement.setString(5, entity.getDate().toString()); // TODO: Really like that?
+            updateStatement.setLong(6, entity.getFeeling().getId());
+            updateStatement.setLong(7, entity.getId());
+            entity.setVersion(ver+1);
             result = (updateStatement.execute()) ? 1 : 0;
         } catch (SQLException e) {
             e.printStackTrace();

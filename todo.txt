@@ -16,3 +16,5 @@ The tomcat website should have the following pages:
 1 page for confirming delete of 1 specific record (optional-ish. But a delete functionality must be there.)
 
 --finished-- _version row: update +1 on update, default 1
+
+domain layer: validate 'set' values and use 'set' methods for constructor

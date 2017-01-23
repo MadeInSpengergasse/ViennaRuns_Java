@@ -87,7 +87,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
     public int update(Connection con, User entity) throws PersistenceException {
         if (updateStatement == null) {
             try {
-                updateStatement = con.prepareStatement(String.format("UPDATE %s SET u_name=?, u_password=? WHERE %s=?", tname, primaryKeyColumnName));
+                updateStatement = con.prepareStatement(String.format("UPDATE %s SET u_version=?, u_name=?, u_password=? WHERE %s=?", tname, primaryKeyColumnName));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -109,10 +109,11 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
             if(entity.getVersion() != ver) {
                 throw new PersistenceException();
             }
-
-            updateStatement.setString(1, entity.getName());
-            updateStatement.setString(2, entity.getPassword());
-            updateStatement.setLong(3, entity.getId());
+            updateStatement.setInt(1, ver+1);
+            updateStatement.setString(2, entity.getName());
+            updateStatement.setString(3, entity.getPassword());
+            updateStatement.setLong(4, entity.getId());
+            entity.setVersion(ver+1);
             result = (updateStatement.execute()) ? 1 : 0;
         } catch (SQLException e) {
             e.printStackTrace();
