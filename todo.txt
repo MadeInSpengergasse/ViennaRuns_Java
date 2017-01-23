@@ -14,3 +14,5 @@ The tomcat website should have the following pages:
 1 page for details of 1 specific record.
 
 1 page for confirming delete of 1 specific record (optional-ish. But a delete functionality must be there.)
+
+_version row: update +1 on update, default 1

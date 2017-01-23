@@ -43,31 +43,42 @@ public class RunRepositoryTest {
 
         Assert.assertNotNull(r_repo.findById(db, r.getId()));
     }
-/*
+
     @Test
     public void testUpdate() throws Exception {
-        UserJdbcRepository repo = new UserJdbcRepository();
+        UserJdbcRepository u_repo = new UserJdbcRepository();
+        FeelingAfterRunJdbcRepository f_repo = new FeelingAfterRunJdbcRepository();
+        RunJdbcRepository r_repo = new RunJdbcRepository();
         Connection db = serviceBase.getTestDb();
 
         User u = new User(
-                "shouldbeupdated",
-                "shouldbeupdated_password");
+                "inserted_name",
+                "inserted_password");
 
-        repo.insert(db, u);
-        Long oldId = u.getId();
-        u.setName("updatedname");
-        u.setPassword("updatedpassword");
+        FeelingAfterRun f = new FeelingAfterRun("tobeinserted");
 
-        repo.update(db, u);
+        Run r = new Run(u, 100f, 100, Date.valueOf("2016-09-09"), f);
 
-        User u2 = repo.findById(db, u.getId()).get();
+        u_repo.insert(db, u);
+        f_repo.insert(db, f);
+        r_repo.insert(db, r);
+        Long oldId = r.getId();
 
-        assertEquals(oldId, u2.getId());
+        r.setDate(Date.valueOf("2016-09-10"));
+        r.setDistance(11.3f);
+        r.setDuration(45);
+        r.setFeeling(f);
 
-        assertEquals(u.getName(), u2.getName());
-        assertEquals(u.getPassword(), u2.getPassword());
+        r_repo.update(db, r);
+
+        Run r2 = r_repo.findById(db, r.getId()).get();
+
+        assertEquals(oldId, r2.getId());
+
+        assertEquals(r.getDistance(), r2.getDistance());
+        assertEquals(r.getDate(), r2.getDate());
     }
-
+/*
     @Test
     public void testDelete() throws Exception {
         UserJdbcRepository repo = new UserJdbcRepository();

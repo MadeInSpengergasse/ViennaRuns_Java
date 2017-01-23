@@ -33,6 +33,6 @@ public class UserAddServlet extends HttpServlet {
       String username = req.getParameter("username");
        String password = req.getParameter("password");
        service.createUser(username,password);
-       req.getRequestDispatcher("/WEB-INF/jsps/listUsers.jsp").forward(req, resp);
+       resp.sendRedirect(req.getContextPath() + "/search");
     }
 }
