@@ -1,6 +1,6 @@
-DROP TABLE Run;
-DROP TABLE User;
-DROP TABLE FeelingAfterRun;
+DROP TABLE IF EXISTS Run;
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS FeelingAfterRun;
 
 CREATE TABLE User
 (
@@ -9,7 +9,7 @@ CREATE TABLE User
     u_name VARCHAR(255),
     u_password VARCHAR(255),
     u_runninggroup INT(11),
-    u_weight DECIMAL(18),
+    u_weight DECIMAL(18)
 );
 CREATE TABLE FeelingAfterRun
 (

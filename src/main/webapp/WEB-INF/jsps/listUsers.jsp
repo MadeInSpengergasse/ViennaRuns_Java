@@ -22,6 +22,7 @@
         </div>
         <button type="submit" class="btn btn-default">Search</button>
     </form>
+    <a type="button" class="btn btn-default" href="create_user">Add User</a>
     <table class="table table-striped">
         <thead>
         <tr>
