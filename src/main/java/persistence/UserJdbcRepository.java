@@ -18,6 +18,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
     private static PreparedStatement insertStatement;
     private static PreparedStatement updateStatement;
     private static PreparedStatement deleteStatement;
+    private static PreparedStatement getVersionByIdStatement;
 
     @Override
     public Optional<User> findById(Connection con, Long id) throws Exception {
@@ -75,6 +76,7 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
                 id = rs.getLong(1);
             }
             entity.setId(id);
+            entity.setVersion(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -90,8 +92,24 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
                 e.printStackTrace();
             }
         }
+        if(getVersionByIdStatement == null) {
+            try {
+                getVersionByIdStatement = con.prepareStatement(String.format("SELECT u_version FROM %s WHERE %s=?", tname, primaryKeyColumnName));
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+        }
         int result = 0;
         try {
+            getVersionByIdStatement.setLong(1, entity.getId());
+            ResultSet res = getVersionByIdStatement.executeQuery();
+            int ver = 0;
+            if(res.next())
+                ver = res.getInt("u_version");
+            if(entity.getVersion() != ver) {
+                throw new PersistenceException();
+            }
+
             updateStatement.setString(1, entity.getName());
             updateStatement.setString(2, entity.getPassword());
             updateStatement.setLong(3, entity.getId());

@@ -5,22 +5,22 @@ DROP TABLE IF EXISTS FeelingAfterRun;
 CREATE TABLE User
 (
     u_id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    u_version INT(11),
+    u_version INT(11) DEFAULT 1,
     u_name VARCHAR(255),
     u_password VARCHAR(255),
-    u_runninggroup INT(11),
-    u_weight DECIMAL(18)
+    u_weight DECIMAL(3, 1),
+    u_height DECIMAL(3, 2)
 );
 CREATE TABLE FeelingAfterRun
 (
     far_id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    far_version INT(11),
+    far_version INT(11) DEFAULT 1,
     far_feeling VARCHAR(255)
 );
 CREATE TABLE Run
 (
     r_id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    r_version INT(11),
+    r_version INT(11) DEFAULT 1,
     r_user INT(11),
     r_distance DECIMAL(18),
     r_duration INT(11),

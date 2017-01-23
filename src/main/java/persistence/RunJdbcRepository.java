@@ -21,6 +21,7 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
     private static PreparedStatement insertStatement;
     private static PreparedStatement updateStatement;
     private static PreparedStatement deleteStatement;
+    private static PreparedStatement getVersionByIdStatement;
 
     @Override
     public Optional<Run> findById(Connection con, Long id) throws Exception {
@@ -81,6 +82,7 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
                 id = rs.getLong(1);
             }
             entity.setId(id);
+            entity.setVersion(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -96,8 +98,24 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
                 e.printStackTrace();
             }
         }
+        if(getVersionByIdStatement == null) {
+            try {
+                getVersionByIdStatement = con.prepareStatement(String.format("SELECT r_version FROM %s WHERE %s=?", tname, primaryKeyColumnName));
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+        }
         int result = 0;
         try {
+            getVersionByIdStatement.setLong(1, entity.getId());
+            ResultSet res = getVersionByIdStatement.executeQuery();
+            int ver = 0;
+            if(res.next())
+                ver = res.getInt("r_version");
+            if(entity.getVersion() != ver) {
+                throw new PersistenceException();
+            }
+
             insertStatement.setLong(1, entity.getUser().getId());
             insertStatement.setFloat(2, entity.getDistance());
             insertStatement.setLong(3, entity.getDuration());

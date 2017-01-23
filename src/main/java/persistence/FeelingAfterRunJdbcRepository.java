@@ -16,6 +16,7 @@ public class FeelingAfterRunJdbcRepository extends AbstractJdbcRepository<Feelin
     private static PreparedStatement insertStatement;
     private static PreparedStatement updateStatement;
     private static PreparedStatement deleteStatement;
+    private static PreparedStatement getVersionByIdStatement;
 
     @Override
     public Optional<FeelingAfterRun> findById(Connection con, Long id) throws Exception {
@@ -68,6 +69,7 @@ public class FeelingAfterRunJdbcRepository extends AbstractJdbcRepository<Feelin
                 id = rs.getLong(1);
             }
             entity.setId(id);
+            entity.setVersion(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,15 +81,32 @@ public class FeelingAfterRunJdbcRepository extends AbstractJdbcRepository<Feelin
         if (updateStatement == null) {
             try {
                 //check
-                updateStatement = con.prepareStatement(String.format(("UPDATE %s SET far_feeling=? WHERE %s=?"), tname, primaryKeyColumnName));
+                updateStatement = con.prepareStatement(String.format(("UPDATE %s SET far_version=?, far_feeling=? WHERE %s=?"), tname, primaryKeyColumnName));
             } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if(getVersionByIdStatement == null) {
+            try {
+                getVersionByIdStatement = con.prepareStatement(String.format("SELECT far_version FROM %s WHERE %s=?", tname, primaryKeyColumnName));
+            } catch(SQLException e) {
                 e.printStackTrace();
             }
         }
         int result = 0;
         try {
-            updateStatement.setString(1, entity.getFeeling());
-            updateStatement.setLong(2, entity.getId());
+            getVersionByIdStatement.setLong(1, entity.getId());
+            ResultSet res = getVersionByIdStatement.executeQuery();
+            int ver = 0;
+            if(res.next())
+                ver = res.getInt("far_version");
+            if(entity.getVersion() != ver) {
+                throw new PersistenceException();
+            }
+            updateStatement.setInt(1, ver+1);
+            updateStatement.setString(2, entity.getFeeling());
+            updateStatement.setLong(3, entity.getId());
+            entity.setVersion(ver+1);
             result = (updateStatement.execute()) ? 1 : 0;
         } catch (SQLException e) {
             e.printStackTrace();
