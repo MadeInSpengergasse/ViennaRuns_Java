@@ -1,6 +1,6 @@
-package persistence;
+package viennaruns.persistence;
 
-import domain.BaseModel;
+import viennaruns.domain.BaseModel;
 
 import java.sql.Connection;
 import java.util.List;

@@ -1,4 +1,4 @@
-package presentation;
+package viennaruns.presentation;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +11,7 @@ import java.io.IOException;
  * Written by Luca Weiss (z3ntu)
  * https://github.com/z3ntu
  */
-@WebServlet(name ="main", urlPatterns = "/")
+@WebServlet(name = "main", urlPatterns = "/")
 public class MainServlet extends HttpServlet {
 
     @Override

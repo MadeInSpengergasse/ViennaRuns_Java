@@ -1,4 +1,4 @@
-package domain;
+package viennaruns.domain;
 
 public class FeelingAfterRun extends BaseModel<FeelingAfterRun, Long> {
 

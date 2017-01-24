@@ -1,11 +1,11 @@
 package domaintests;
 
-import domain.FeelingAfterRun;
-import domain.Run;
-import domain.User;
 import junitparams.JUnitParamsRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import viennaruns.domain.FeelingAfterRun;
+import viennaruns.domain.Run;
+import viennaruns.domain.User;
 
 import java.sql.Date;
 

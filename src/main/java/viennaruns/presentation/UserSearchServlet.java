@@ -1,8 +1,8 @@
-package presentation;
+package viennaruns.presentation;
 
-import domain.User;
-import persistence.UserJdbcRepository;
-import service.UserSearchService;
+import viennaruns.domain.User;
+import viennaruns.persistence.UserJdbcRepository;
+import viennaruns.service.UserSearchService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

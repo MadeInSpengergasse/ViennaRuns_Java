@@ -1,19 +1,19 @@
 package persistencetests;
 
-import domain.FeelingAfterRun;
-import domain.Run;
-import domain.User;
 import org.junit.Assert;
 import org.junit.Test;
-import persistence.FeelingAfterRunJdbcRepository;
-import persistence.RunJdbcRepository;
-import persistence.UserJdbcRepository;
-import service.ServiceBase;
+import viennaruns.domain.FeelingAfterRun;
+import viennaruns.domain.Run;
+import viennaruns.domain.User;
+import viennaruns.persistence.FeelingAfterRunJdbcRepository;
+import viennaruns.persistence.RunJdbcRepository;
+import viennaruns.persistence.UserJdbcRepository;
+import viennaruns.service.ServiceBase;
 
 import java.sql.Connection;
 import java.sql.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Jan Wadsak on 11/12/2016.

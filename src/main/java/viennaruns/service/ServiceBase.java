@@ -1,4 +1,4 @@
-package service;
+package viennaruns.service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

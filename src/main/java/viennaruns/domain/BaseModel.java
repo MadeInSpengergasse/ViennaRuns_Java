@@ -1,6 +1,6 @@
-package domain;
+package viennaruns.domain;
 
-import foundation.Ensurer;
+import viennaruns.foundation.Ensurer;
 
 import java.time.LocalDateTime;
 

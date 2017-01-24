@@ -1,9 +1,9 @@
 package domaintests;
 
-import domain.User;
 import junitparams.JUnitParamsRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import viennaruns.domain.User;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;

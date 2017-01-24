@@ -1,7 +1,7 @@
-package presentation;
+package viennaruns.presentation;
 
-import persistence.UserJdbcRepository;
-import service.UserAddService;
+import viennaruns.persistence.UserJdbcRepository;
+import viennaruns.service.UserAddService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,9 +29,9 @@ public class UserAddServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-      String username = req.getParameter("username");
-       String password = req.getParameter("password");
-       service.createUser(username,password);
-       resp.sendRedirect(req.getContextPath() + "/search");
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        service.createUser(username, password);
+        resp.sendRedirect(req.getContextPath() + "/search");
     }
 }

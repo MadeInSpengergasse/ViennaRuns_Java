@@ -1,7 +1,7 @@
-package service;
+package viennaruns.service;
 
-import domain.User;
-import persistence.UserJdbcRepository;
+import viennaruns.domain.User;
+import viennaruns.persistence.UserJdbcRepository;
 
 /**
  * Created by lukas on 1/16/17.

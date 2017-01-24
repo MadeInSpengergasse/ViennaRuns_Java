@@ -1,12 +1,10 @@
 package persistencetests;
 
-import domain.FeelingAfterRun;
-import domain.User;
 import org.junit.Assert;
 import org.junit.Test;
-import persistence.FeelingAfterRunJdbcRepository;
-import persistence.UserJdbcRepository;
-import service.ServiceBase;
+import viennaruns.domain.FeelingAfterRun;
+import viennaruns.persistence.FeelingAfterRunJdbcRepository;
+import viennaruns.service.ServiceBase;
 
 import java.sql.Connection;
 

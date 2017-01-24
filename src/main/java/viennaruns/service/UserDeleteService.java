@@ -1,9 +1,8 @@
-package service;
+package viennaruns.service;
 
-import domain.User;
-import persistence.UserJdbcRepository;
+import viennaruns.domain.User;
+import viennaruns.persistence.UserJdbcRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,9 +15,10 @@ public class UserDeleteService extends ServiceBase {
         this.userrep = repository;
     }
 
-    public void deleteUser (long id){
+    public void deleteUser(long id) {
         userrep.delete(getDb(), id);
     }
+
     public Optional<User> findUser(long id) throws Exception {
         return userrep.findById(getDb(), id);
     }

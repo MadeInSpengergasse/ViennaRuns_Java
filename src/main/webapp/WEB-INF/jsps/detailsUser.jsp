@@ -21,10 +21,10 @@
 </head>
 <body>
 <div class="form-group">
-<h1>${requestScope.username} details</h1>
-Name: ${requestScope.username}
-<br>
-Password: ${requestScope.password}
+    <h1>${requestScope.username} details</h1>
+    Name: ${requestScope.username}
+    <br>
+    Password: ${requestScope.password}
     <br>
     <a type="button" class="btn btn-default" href="search">Go Back</a>
 </div>
