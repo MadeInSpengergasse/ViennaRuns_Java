@@ -2,7 +2,6 @@ package presentation;
 
 import persistence.UserJdbcRepository;
 import service.UserAddService;
-import service.UserSearchService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +13,7 @@ import java.io.IOException;
 /**
  * Created by lukas on 1/16/17.
  */
-@WebServlet (name ="create_user", urlPatterns = "/create_user")
+@WebServlet(name = "create_user", urlPatterns = "/create_user")
 public class UserAddServlet extends HttpServlet {
     private UserAddService service;
 

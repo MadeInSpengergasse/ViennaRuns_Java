@@ -32,7 +32,7 @@ public class RunJdbcRepository extends AbstractJdbcRepository<Run, Long> {
         ResultSet res = findByIdStatement.executeQuery();
 
         Run r = null;
-        if(res.next()) {
+        if (res.next()) {
             User u = new User(res.getLong("u_id"), res.getInt("u_version"), res.getString("u_name"), res.getString("u_password"));
             FeelingAfterRun far = new FeelingAfterRun(res.getLong("far_id"), res.getInt("far_version"), res.getString("far_feeling"));
             r = new Run(res.getLong(primaryKeyColumnName), res.getInt("r_version"), u, res.getFloat("r_distance"), res.getInt("r_duration"), res.getDate("r_date"), far);
