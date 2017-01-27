@@ -46,9 +46,10 @@ public class RunRepositoryTest {
 
     @Test
     public void testUpdate() throws Exception {
+        RunJdbcRepository r_repo = new RunJdbcRepository();
         UserJdbcRepository u_repo = new UserJdbcRepository();
         FeelingAfterRunJdbcRepository f_repo = new FeelingAfterRunJdbcRepository();
-        RunJdbcRepository r_repo = new RunJdbcRepository();
+
         Connection db = serviceBase.getTestDb();
 
         User u = new User(
@@ -78,38 +79,49 @@ public class RunRepositoryTest {
         assertEquals(r.getDistance(), r2.getDistance());
         assertEquals(r.getDate(), r2.getDate());
     }
-/*
+
     @Test
     public void testDelete() throws Exception {
-        UserJdbcRepository repo = new UserJdbcRepository();
+        RunJdbcRepository repo_r = new RunJdbcRepository();
+        UserJdbcRepository repo_u = new UserJdbcRepository();
+        FeelingAfterRunJdbcRepository repo_f = new FeelingAfterRunJdbcRepository();
+
         Connection db = serviceBase.getTestDb();
 
-        User u = new User(
-                "shouldbedeleted",
-                "shouldbedeleted_password");
+        User u = new User("naame", "paassword");
+        FeelingAfterRun f = new FeelingAfterRun("horrible!");
+        Run r = new Run(u, 2000f, 200, Date.valueOf("2016-09-05"), f);
 
-        repo.insert(db, u);
+        repo_u.insert(db, u);
+        repo_f.insert(db, f);
+        repo_r.insert(db, r);
         // if present
-        assertTrue(repo.findById(db, u.getId()).isPresent());
+        assertTrue(repo.findById(db, r.getId()).isPresent());
 
-        repo.delete(db, u);
+        repo.delete(db, r);
         //if not present anymore
-        assertFalse(repo.findById(db, u.getId()).isPresent());
+        assertFalse(repo.findById(db, r.getId()).isPresent());
     }
 
     @Test
     public void testFindByNameLike() throws Exception {
-        UserJdbcRepository repo = new UserJdbcRepository();
+        RunJdbcRepository repo_r = new RunJdbcRepository();
+        UserJdbcRepository repo_u = new UserJdbcRepository();
+        FeelingAfterRunJdbcRepository repo_f = new FeelingAfterRunJdbcRepository();
+
         Connection db = serviceBase.getTestDb();
 
         User u = new User(
-                "usertobefound",
-                "somepassword");
+                "useruser",
+                "securepassword");
+        FeelingAfterRun f = new FeelingAfterRun("yeah!");
+        Run r = new Run(u, 456f, 123, Date.valueOf("2016-10-04"), f);
 
-        repo.insert(db, u);
+        repo_u.insert(db, f);
+        repo_f.insert(db, r);
+        repo_r.insert(db, u);
 
-        assertFalse(repo.findByNameLike(db, "tobefound").isEmpty());
+        assertFalse(repo.findByNameLike(db, r.getId()).isEmpty());
         assertTrue(repo.findByNameLike(db, "nonexistinguser").isEmpty());
     }
-    */
 }
