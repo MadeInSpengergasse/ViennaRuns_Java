@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: lukas
-  Date: 1/16/17
-  Time: 3:52 PM
+  Date: 1/24/17
+  Time: 1:32 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Create User</title>
+    <title>Edit ${requestScope.username}:</title>
     <%--<link rel="stylesheet" href="/fake.css"/>--%>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -20,23 +20,29 @@
 
 </head>
 <body>
-<form class="form-horizontal" action="create_user" method="POST">
-    <div class="form-group">
-        <h1>Create a new User</h1>
-    </div>
-    <table class="table table-striped">
-        <tr>
-            <td>Username:</td>
-            <td><input type="text" name="username"/></td>
-        </tr>
-        <tr>
-            <td>Password:</td>
-            <td><input type="password" name="password"/></td>
-        </tr>
-    </table>
-    <button type="submit" class="btn btn-default">Create</button>
+<div class="form-group">
+    <h1>Edit ${requestScope.username}</h1>
 
-</form>
 
+
+    <form class="form-horizontal" action="edit_user" method="POST">
+
+
+
+        <table class="table table-striped">
+            <tr>
+                <td>Username:</td>
+                <td><input type="text" value="${requestScope.username}" name="username"/></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type="password" value="${requestScope.password}" name="password"/></td>
+            </tr>
+        </table>
+
+        <button type="submit" class="btn btn-default">Save</button>
+
+    </form>
+    <a type="button" class="btn btn-default" href="search">Go Back</a>
 </body>
 </html>

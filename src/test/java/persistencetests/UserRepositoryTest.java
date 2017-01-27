@@ -1,10 +1,10 @@
 package persistencetests;
 
-import domain.User;
 import org.junit.Assert;
 import org.junit.Test;
-import persistence.UserJdbcRepository;
-import service.ServiceBase;
+import viennaruns.domain.User;
+import viennaruns.persistence.UserJdbcRepository;
+import viennaruns.service.ServiceBase;
 
 import java.sql.Connection;
 

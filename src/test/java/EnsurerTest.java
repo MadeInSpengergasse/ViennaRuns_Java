@@ -1,4 +1,3 @@
-import foundation.Ensurer;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.hamcrest.Matchers;
@@ -6,6 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import viennaruns.foundation.Ensurer;
 
 import java.util.Optional;
 

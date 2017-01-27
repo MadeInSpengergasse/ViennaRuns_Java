@@ -1,8 +1,8 @@
-package persistence;
+package viennaruns.persistence;
 
-import domain.BaseModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import viennaruns.domain.BaseModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

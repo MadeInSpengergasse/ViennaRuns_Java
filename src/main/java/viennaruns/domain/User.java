@@ -1,4 +1,4 @@
-package domain;
+package viennaruns.domain;
 
 public class User extends BaseModel<User, Long> {
 

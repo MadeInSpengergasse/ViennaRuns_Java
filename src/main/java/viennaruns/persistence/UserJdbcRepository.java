@@ -1,6 +1,6 @@
-package persistence;
+package viennaruns.persistence;
 
-import domain.User;
+import viennaruns.domain.User;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -92,10 +92,10 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
                 e.printStackTrace();
             }
         }
-        if(getVersionByIdStatement == null) {
+        if (getVersionByIdStatement == null) {
             try {
                 getVersionByIdStatement = con.prepareStatement(String.format("SELECT u_version FROM %s WHERE %s=?", tname, primaryKeyColumnName));
-            } catch(SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -104,16 +104,16 @@ public class UserJdbcRepository extends AbstractJdbcRepository<User, Long> imple
             getVersionByIdStatement.setLong(1, entity.getId());
             ResultSet res = getVersionByIdStatement.executeQuery();
             int ver = 0;
-            if(res.next())
+            if (res.next())
                 ver = res.getInt("u_version");
-            if(entity.getVersion() != ver) {
+            if (entity.getVersion() != ver) {
                 throw new PersistenceException();
             }
-            updateStatement.setInt(1, ver+1);
+            updateStatement.setInt(1, ver + 1);
             updateStatement.setString(2, entity.getName());
             updateStatement.setString(3, entity.getPassword());
             updateStatement.setLong(4, entity.getId());
-            entity.setVersion(ver+1);
+            entity.setVersion(ver + 1);
             result = (updateStatement.execute()) ? 1 : 0;
         } catch (SQLException e) {
             e.printStackTrace();

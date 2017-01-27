@@ -1,4 +1,4 @@
-package domain;
+package viennaruns.domain;
 
 
 import java.sql.Date;

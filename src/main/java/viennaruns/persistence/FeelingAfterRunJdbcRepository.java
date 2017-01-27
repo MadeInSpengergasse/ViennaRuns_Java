@@ -1,6 +1,6 @@
-package persistence;
+package viennaruns.persistence;
 
-import domain.FeelingAfterRun;
+import viennaruns.domain.FeelingAfterRun;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -86,10 +86,10 @@ public class FeelingAfterRunJdbcRepository extends AbstractJdbcRepository<Feelin
                 e.printStackTrace();
             }
         }
-        if(getVersionByIdStatement == null) {
+        if (getVersionByIdStatement == null) {
             try {
                 getVersionByIdStatement = con.prepareStatement(String.format("SELECT far_version FROM %s WHERE %s=?", tname, primaryKeyColumnName));
-            } catch(SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -98,15 +98,15 @@ public class FeelingAfterRunJdbcRepository extends AbstractJdbcRepository<Feelin
             getVersionByIdStatement.setLong(1, entity.getId());
             ResultSet res = getVersionByIdStatement.executeQuery();
             int ver = 0;
-            if(res.next())
+            if (res.next())
                 ver = res.getInt("far_version");
-            if(entity.getVersion() != ver) {
+            if (entity.getVersion() != ver) {
                 throw new PersistenceException();
             }
-            updateStatement.setInt(1, ver+1);
+            updateStatement.setInt(1, ver + 1);
             updateStatement.setString(2, entity.getFeeling());
             updateStatement.setLong(3, entity.getId());
-            entity.setVersion(ver+1);
+            entity.setVersion(ver + 1);
             result = (updateStatement.execute()) ? 1 : 0;
         } catch (SQLException e) {
             e.printStackTrace();
