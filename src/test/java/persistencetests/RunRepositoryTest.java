@@ -66,7 +66,7 @@ public class RunRepositoryTest {
         Long oldId = r.getId();
 
         r.setDate(Date.valueOf("2016-09-10"));
-        r.setDistance(11.3f);
+        r.setDistance(12.5f);
         r.setDuration(45);
         r.setFeeling(f);
 
