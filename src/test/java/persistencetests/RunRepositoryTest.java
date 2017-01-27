@@ -96,32 +96,10 @@ public class RunRepositoryTest {
         repo_f.insert(db, f);
         repo_r.insert(db, r);
         // if present
-        assertTrue(repo.findById(db, r.getId()).isPresent());
+        assertTrue(repo_r.findById(db, r.getId()).isPresent());
 
-        repo.delete(db, r);
+        repo_r.delete(db, r);
         //if not present anymore
-        assertFalse(repo.findById(db, r.getId()).isPresent());
-    }
-
-    @Test
-    public void testFindByNameLike() throws Exception {
-        RunJdbcRepository repo_r = new RunJdbcRepository();
-        UserJdbcRepository repo_u = new UserJdbcRepository();
-        FeelingAfterRunJdbcRepository repo_f = new FeelingAfterRunJdbcRepository();
-
-        Connection db = serviceBase.getTestDb();
-
-        User u = new User(
-                "useruser",
-                "securepassword");
-        FeelingAfterRun f = new FeelingAfterRun("yeah!");
-        Run r = new Run(u, 456f, 123, Date.valueOf("2016-10-04"), f);
-
-        repo_u.insert(db, u);
-        repo_f.insert(db, f);
-        repo_r.insert(db, r);
-
-        assertFalse(repo.findByNameLike(db, r.getId()).isEmpty());
-        assertTrue(repo.findByNameLike(db, "nonexistinguser").isEmpty());
+        assertFalse(repo_r.findById(db, r.getId()).isPresent());
     }
 }
