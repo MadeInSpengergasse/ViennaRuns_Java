@@ -36,6 +36,7 @@
                 <td>${user.name}</td>
                 <td>${user.password}</td>
                 <td><a type="button" class="btn btn-default" href="details_user?uid=${user.id}">Details</a></td>
+                <td><a type="button" class="btn btn-default" href="edit_user?uid=${user.id}">Edit</a></td>
                 <td><a type="button" class="btn btn-default" href="delete_user?uid=${user.id}">Delete</a></td>
             </tr>
         </c:forEach>

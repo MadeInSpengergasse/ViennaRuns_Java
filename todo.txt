@@ -9,11 +9,11 @@ The tomcat website should have the following pages:
 
 --finished-- 1 page for creating entries. Only display reasonable fields for input of data. (DON'T allow user to determine the ID and the version. The database & viennaruns.persistence layer are supposed to do it)
 
-1 page for edit for 1 specific record. (Select path however you may see fit)
+--finished-- 1 page for edit for 1 specific record. (Select path however you may see fit)
 
 --finished-- 1 page for details of 1 specific record.
 
-1 page for confirming delete of 1 specific record (optional-ish. But a delete functionality must be there.)
+--finished-- 1 page for confirming delete of 1 specific record (optional-ish. But a delete functionality must be there.)
 
 --finished-- _version row: update +1 on update, default 1
 

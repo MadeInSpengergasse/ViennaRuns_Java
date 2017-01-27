@@ -18,7 +18,7 @@
         <!-- dependency versions -->
         <!-- util -->
         <commons-lang3.version>3.4</commons-lang3.version>
-        <viennaruns.persistenceence -->
+        <!-- persistence -->
         <hsqldb.version>2.3.3</hsqldb.version>
         <!-- logging -->
         <slf4j-api.version>1.7.12</slf4j-api.version>
