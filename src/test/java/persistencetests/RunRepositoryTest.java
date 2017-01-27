@@ -117,9 +117,9 @@ public class RunRepositoryTest {
         FeelingAfterRun f = new FeelingAfterRun("yeah!");
         Run r = new Run(u, 456f, 123, Date.valueOf("2016-10-04"), f);
 
-        repo_u.insert(db, f);
-        repo_f.insert(db, r);
-        repo_r.insert(db, u);
+        repo_u.insert(db, u);
+        repo_f.insert(db, f);
+        repo_r.insert(db, r);
 
         assertFalse(repo.findByNameLike(db, r.getId()).isEmpty());
         assertTrue(repo.findByNameLike(db, "nonexistinguser").isEmpty());
