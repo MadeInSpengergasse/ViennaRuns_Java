@@ -11,9 +11,9 @@ import viennaruns.persistence.UserJdbcRepository;
 import viennaruns.service.ServiceBase;
 
 import java.sql.Connection;
-import java.sql.Date;
+import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Created by Jan Wadsak on 11/12/2016.
@@ -35,7 +35,7 @@ public class RunRepositoryTest {
 
         FeelingAfterRun f = new FeelingAfterRun("tobeinserted");
 
-        Run r = new Run(u, 100f, 100, Date.valueOf("2016-09-09"), f);
+        Run r = new Run(u, 100f, 100, LocalDate.of(2016, 9, 9), f);
 
         u_repo.insert(db, u);
         f_repo.insert(db, f);
@@ -58,14 +58,14 @@ public class RunRepositoryTest {
 
         FeelingAfterRun f = new FeelingAfterRun("tobeinserted");
 
-        Run r = new Run(u, 100f, 100, Date.valueOf("2016-09-09"), f);
+        Run r = new Run(u, 100f, 100, LocalDate.of(2016, 9, 9), f);
 
         u_repo.insert(db, u);
         f_repo.insert(db, f);
         r_repo.insert(db, r);
         Long oldId = r.getId();
 
-        r.setDate(Date.valueOf("2016-09-10"));
+        r.setDate(LocalDate.of(2016, 9, 10));
         r.setDistance(12.5f);
         r.setDuration(45);
         r.setFeeling(f);
@@ -90,7 +90,7 @@ public class RunRepositoryTest {
 
         User u = new User("naame", "paassword");
         FeelingAfterRun f = new FeelingAfterRun("horrible!");
-        Run r = new Run(u, 2000f, 200, Date.valueOf("2016-09-05"), f);
+        Run r = new Run(u, 2000f, 200, LocalDate.of(2016, 9, 5), f);
 
         repo_u.insert(db, u);
         repo_f.insert(db, f);

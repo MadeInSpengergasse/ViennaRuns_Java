@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Created by lukas on 1/24/17.
  */
-public class UserEditService extends  ServiceBase{
+public class UserEditService extends ServiceBase {
 
     private final UserJdbcRepository userrep;
 
@@ -20,7 +20,7 @@ public class UserEditService extends  ServiceBase{
         return userrep.findById(getDb(), id);
     }
 
-    public void updateUser (User u){
+    public void updateUser(User u) {
         userrep.update(getDb(), u);
     }
 

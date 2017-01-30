@@ -22,7 +22,7 @@ CREATE TABLE Run
     r_id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     r_version INT(11) DEFAULT 1,
     r_user INT(11),
-    r_distance DECIMAL(18),
+    r_distance DECIMAL(6, 2),
     r_duration INT(11),
     r_date DATETIME,
     r_feeling INT(11),

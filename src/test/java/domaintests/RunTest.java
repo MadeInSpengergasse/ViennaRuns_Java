@@ -7,7 +7,7 @@ import viennaruns.domain.FeelingAfterRun;
 import viennaruns.domain.Run;
 import viennaruns.domain.User;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;
@@ -25,7 +25,7 @@ public class RunTest {
         User user = new User(id, version, name, password);
         float distance = 10f;
         int duration = 100;
-        Date date = Date.valueOf("2016-09-09");
+        LocalDate date = LocalDate.of(2016, 9, 9);
         FeelingAfterRun feeling = new FeelingAfterRun(id, version, "Somestring");
         Run run = new Run(id, version, user, distance, duration, date, feeling);
 
@@ -47,7 +47,7 @@ public class RunTest {
         User user = new User(id, version, name, password);
         float distance = 10f;
         int duration = 100;
-        Date date = Date.valueOf("2016-09-09");
+        LocalDate date = LocalDate.of(2016, 9, 9);
         FeelingAfterRun feeling = new FeelingAfterRun(id, version, "Somestring");
         Run run = new Run(id, version, user, distance, duration, date, feeling);
 
@@ -59,7 +59,7 @@ public class RunTest {
         User newuser = new User(newid, newversion, newname, newpassword);
         float newdistance = 20f;
         int newduration = 200;
-        Date newdate = Date.valueOf("2016-12-09");
+        LocalDate newdate = LocalDate.of(2016, 12, 9);
         FeelingAfterRun newfeeling = new FeelingAfterRun(newid, newversion, "Somestring2");
 
         run.setId(newid);
@@ -81,9 +81,9 @@ public class RunTest {
 
     @Test
     public void compareToWorks() {
-        Run run1 = new Run(1L, 1, new User(2L, 2, "name", "password"), 100f, 10, Date.valueOf("2017-09-09"), new FeelingAfterRun(3L, 3, "something"));
-        Run run2 = new Run(1L, 1, new User(2L, 2, "name", "password"), 100f, 10, Date.valueOf("2017-09-09"), new FeelingAfterRun(3L, 3, "something"));
-        Run run3 = new Run(2L, 1, new User(2L, 2, "name", "password"), 100f, 10, Date.valueOf("2017-09-09"), new FeelingAfterRun(3L, 3, "something"));
+        Run run1 = new Run(1L, 1, new User(2L, 2, "name", "password"), 100f, 10, LocalDate.of(2017, 9, 9), new FeelingAfterRun(3L, 3, "something"));
+        Run run2 = new Run(1L, 1, new User(2L, 2, "name", "password"), 100f, 10, LocalDate.of(2017, 9, 9), new FeelingAfterRun(3L, 3, "something"));
+        Run run3 = new Run(2L, 1, new User(2L, 2, "name", "password"), 100f, 10, LocalDate.of(2017, 9, 9), new FeelingAfterRun(3L, 3, "something"));
 
         assertTrue(run1.compareTo(run2) == 0);
         assertTrue(run2.compareTo(run1) == 0);

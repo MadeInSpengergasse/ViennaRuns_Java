@@ -1,7 +1,7 @@
 package viennaruns.domain;
 
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Run extends BaseModel<Run, Long> {
 
@@ -9,18 +9,18 @@ public class Run extends BaseModel<Run, Long> {
     private User user;
     private Float distance;
     private Integer duration;
-    private Date date;
+    private LocalDate date;
     private FeelingAfterRun feeling;
 
     public Run() {
         super();
     }
 
-    public Run(User user, Float distance, Integer duration, Date date, FeelingAfterRun feeling) {
+    public Run(User user, Float distance, Integer duration, LocalDate date, FeelingAfterRun feeling) {
         this(-1L, -1, user, distance, duration, date, feeling);
     }
 
-    public Run(Long id, final Integer version, User user, Float distance, Integer duration, Date date, FeelingAfterRun feeling) {
+    public Run(Long id, final Integer version, User user, Float distance, Integer duration, LocalDate date, FeelingAfterRun feeling) {
         super(id, version);
 
         setUser(user);
@@ -55,11 +55,11 @@ public class Run extends BaseModel<Run, Long> {
         this.duration = duration;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

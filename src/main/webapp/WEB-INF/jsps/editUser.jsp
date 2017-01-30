@@ -24,9 +24,7 @@
     <h1>Edit ${requestScope.username}</h1>
 
 
-
     <form class="form-horizontal" action="edit_user" method="POST">
-
 
 
         <table class="table table-striped">

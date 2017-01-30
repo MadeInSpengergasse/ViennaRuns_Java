@@ -56,7 +56,6 @@ public class UserEditServlet extends HttpServlet {
                 resp.sendRedirect("search");
 
 
-
             }
         } catch (Exception e) {
             e.printStackTrace();
