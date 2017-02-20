@@ -1,0 +1,4 @@
+spring.datasource.url=jdbc:mysql://private.z3ntu.xyz/viennaruns_test
+spring.datasource.username=viennaruns
+spring.datasource.password=prettylongpasswordwhichishardtoguess
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver

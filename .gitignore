@@ -25,4 +25,4 @@ nbdist/
 
 
 # Credentials
-src/main/resources/credentials.properties
+src/main/resources/application-default.properties
