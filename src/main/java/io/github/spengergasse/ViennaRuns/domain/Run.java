@@ -2,15 +2,12 @@ package io.github.spengergasse.ViennaRuns.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Run")
+@Table(name = "run")
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class Run extends BaseDomain<Run, Long> {
@@ -37,9 +34,11 @@ public class Run extends BaseDomain<Run, Long> {
     private LocalDate date;
 
     @ManyToOne
+    @JoinColumn(name = "user")
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "feeling")
     private FeelingAfterRun feeling;
 
     @Override

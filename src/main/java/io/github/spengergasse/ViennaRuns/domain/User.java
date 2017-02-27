@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class User extends BaseDomain<User, Long> {

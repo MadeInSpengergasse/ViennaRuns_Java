@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "FeelingAfterRun")
+@Table(name = "feelingafterrun")
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class FeelingAfterRun extends BaseDomain<FeelingAfterRun, Long> {
