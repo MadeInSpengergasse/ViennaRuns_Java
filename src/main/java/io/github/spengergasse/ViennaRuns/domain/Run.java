@@ -6,28 +6,23 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+@Data
 @Entity
 @Table(name = "run")
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class Run extends BaseDomain<Run, Long> {
 
-    @Getter
-    @Setter
     @NonNull
     @NotNull
     @Column(name = "distance")
     private Float distance;
 
-    @Getter
-    @Setter
     @NonNull
     @NotNull
     @Column(name = "duration")
     private Integer duration;
 
-    @Getter
-    @Setter
     @NonNull
     @NotNull
     @Column(name = "date")
