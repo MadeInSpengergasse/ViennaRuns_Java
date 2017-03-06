@@ -5,7 +5,6 @@ import io.github.spengergasse.ViennaRuns.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
