@@ -43,6 +43,6 @@ public class Run extends BaseDomain<Run, Long> {
 
     @Override
     public int compareTo(Run o) {
-        return 0; //FIXME
+        return super.getId().compareTo(o.getId());
     }
 }

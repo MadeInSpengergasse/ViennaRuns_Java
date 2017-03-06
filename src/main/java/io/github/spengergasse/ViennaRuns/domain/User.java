@@ -32,6 +32,6 @@ public class User extends BaseDomain<User, Long> {
 
     @Override
     public int compareTo(User o) {
-        return 0; //FIXME
+        return super.getId().compareTo(o.getId());
     }
 }

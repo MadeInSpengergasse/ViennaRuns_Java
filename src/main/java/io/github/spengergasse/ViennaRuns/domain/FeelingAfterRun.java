@@ -24,6 +24,6 @@ public class FeelingAfterRun extends BaseDomain<FeelingAfterRun, Long> {
 
     @Override
     public int compareTo(FeelingAfterRun o) {
-        return 0; //FIXME
+        return super.getId().compareTo(o.getId());
     }
 }
