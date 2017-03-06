@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.Duration;
 import java.time.LocalDate;
 
 @Data
@@ -24,7 +25,7 @@ public class Run extends BaseDomain<Run, Long> {
     @NonNull
     @NotNull
     @Column(name = "duration")
-    private Integer duration;
+    private Duration duration;
 
     @NonNull
     @NotNull
@@ -41,6 +42,6 @@ public class Run extends BaseDomain<Run, Long> {
 
     @Override
     public int compareTo(Run o) {
-        return super.getId().compareTo(o.getId());
+        return date.compareTo(o.getDate());
     }
 }

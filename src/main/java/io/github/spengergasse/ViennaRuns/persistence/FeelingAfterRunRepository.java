@@ -3,12 +3,12 @@ package io.github.spengergasse.ViennaRuns.persistence;
 
 import io.github.spengergasse.ViennaRuns.domain.FeelingAfterRun;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@RepositoryRestResource(collectionResourceRel = "feelingafterrun", path = "feelingafterrun")
+@Repository
 public interface FeelingAfterRunRepository extends JpaRepository<FeelingAfterRun, Long> {
     Optional<FeelingAfterRun> findById(Long id);
 

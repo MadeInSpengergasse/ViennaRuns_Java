@@ -32,6 +32,6 @@ public class User extends BaseDomain<User, Long> {
 
     @Override
     public int compareTo(User o) {
-        return super.getId().compareTo(o.getId());
+        return name.compareTo(o.getName());
     }
 }
