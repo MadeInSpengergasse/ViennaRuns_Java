@@ -9,13 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Service
 @Transactional(readOnly = true)
-public class UserSearchService {
+public class UserService {
 
     private final UserRepository userRepository;
 
@@ -23,6 +24,9 @@ public class UserSearchService {
         return Optional.ofNullable(userRepository.save(new User(name, password)));
     }
 
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 
     // TODO: user stories should be fulfilled here (user registers)
 }
