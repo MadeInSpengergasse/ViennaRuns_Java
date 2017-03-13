@@ -32,10 +32,14 @@ public class Run extends BaseDomain<Run, Long> {
     @Column(name = "date")
     private LocalDate date;
 
+    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "user")
     private User user;
 
+    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "feeling")
     private FeelingAfterRun feeling;
